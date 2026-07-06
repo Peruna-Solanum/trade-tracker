@@ -1,0 +1,673 @@
+:root {
+    color-scheme: light dark custom;
+}
+#body {
+    color: light-dark(#333b3c, #c0c0c0);
+    background-color: light-dark(#efedea, #363636);
+    cursor: default;
+}
+header {
+    overflow: visible;
+    position:fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    font-size: 20px;
+    box-shadow: 0px 5px 5px black;
+    background-color:light-dark(rgb(224, 223, 223), #5e5e5e);
+    grid-template-rows:1fr 1fr;
+    align-self: center;
+    grid-template-areas: 
+        "topHeader"
+        "nav"
+}
+    #topHeader * {
+        padding: 0px 10px;
+    } 
+    #topHeader {
+        grid-area: "topHeader";
+        display: flex;
+        align-items: center;
+        /* border-bottom: 1px solid black */
+    }
+    #topHeader:hover {
+        cursor: default;
+    }     
+    #logo {
+        all: unset;
+        font-size: 32px;
+        padding: 5px;
+    }
+    #logo:hover {
+        cursor: pointer;
+    }
+            #changeFileButton {
+                background-color: light-dark(white, gray);
+                bordeR: 1px solid light-dark(black, rgb(163, 163, 163));
+                padding: 5px;
+                margin: 5px 5px 5px 5px;
+                border-radius: 4px;
+            }
+            #changeFileButton:hover {
+                background-color: light-dark(lightgray, rgb(128, 128, 128));
+                color: light-dark(black, white);
+                border: 1px solid light-dark(gray, rgb(185, 185, 185));
+                cursor: pointer;
+            }
+            #changeFileButton:active {
+                background-color: light-dark(white, gray);
+            }
+    nav {
+        grid-area: "nav";
+        font-weight: bold;
+    }
+    a {
+        color: light-dark(black, #c0c0c0);
+        text-decoration: none;
+        padding: 5px;
+
+    }
+    a:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .youAreHere {
+        pointer-events: none;
+        font-weight: bold;
+        text-decoration: underline;
+        opacity: .5;
+    }
+/*---------------------------Main Section-----------------------------------------------*/
+@media (width < 600px) {/*to make the main section be in one layer when made small enough*/
+    #body {
+        color: light-dark(#333b3c, #c0c0c0);
+        background-color: light-dark(#efedea, #363636);
+    }
+    #main {
+        grid-area: 'main';
+        display: grid;
+    }
+    #showTrades {
+        grid-row: 2;
+        grid-column: 1 / span 2;
+    }
+    #addTrade {
+        grid-row: 1;
+        grid-column: 1 / span 2;
+        border-bottom: 4px solid white;
+    }
+}/*--------------------------------------------*/
+
+#main {
+    grid-area: "main";
+    display: grid;
+    grid-template-columns: 60%40%;
+    grid-template-areas: 
+    "showTrades addTrade";
+    margin: 0px;
+    width: 100%;
+}
+#addTrade {
+    grid-area: "addTrade";
+    background-color: light-dark(rgb(211, 208, 208), rgb(65, 64, 64));
+    margin: 5px 0px 5px 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: .1fr .1fr 1fr;
+    grid-template-areas: "h2 clearTrade"
+    "form form"
+    "noteZone noteZone";
+    
+}
+    #addTrade h2 {
+        grid-area: "h2";
+        margin-bottom: 10px;
+        max-width:10em;
+        height: 1em;
+        margin-right: 0px;
+        
+    }
+    #clearTrade {
+        grid-area: "clearTrade";
+        font-size: 2em;
+        color: red;
+        font-style: monospace;
+        justify-self: right;
+        margin-bottom: 10px;
+        padding: 16px 0px 0px 0px;
+        height: 1em; 
+    }
+    h2 {
+        all: unset;
+        font-size: 24px;
+        margin: 15px;
+        margin: 15px 15px 0px 15px;
+        display: inline-block;
+    }
+    #form {
+        all: unset;
+        grid-area: "form";
+        margin: 0px 0px 0px 10px;
+        grid-column: span 2;
+        border-bottom: 2px solid black;      
+    }
+    input {
+        color: light-dark(#333b3c, #c0c0c0);
+        font-size: 1em;
+        min-height: 2em;
+        max-height:2em;
+        max-width: 5em;
+        padding: 2px;
+        margin: 3px;
+    }
+    #tradeDate {
+        min-height: 2.4em;
+        min-width: 7.25em;
+    }
+    button {
+        cursor: pointer;
+        background-color: light-dark(white, gray);
+        border-radius: 3px;
+        border: 1px solid rgb(167, 167, 167);
+    }
+    button:hover {
+        background-color: light-dark(rgb(228, 225, 225), rgb(116, 114, 114));
+    }
+    button:active {
+        background-color: light-dark(rgb(172, 171, 171), rgb(143, 143, 143));
+    }
+    #explanation{
+         overflow:  auto;
+    }
+    
+    select  {
+         height: 3.1em;
+         margin: 3px;color: gray;
+        color: light-dark(#333b3c, #c0c0c0);
+        cursor: pointer;
+    }
+        #A {
+            background-color: lime;
+            color: black;
+        }
+        #B {
+            background-color: rgb(201, 250, 24);
+            color: black;
+        }
+        #C {
+            background-color: yellow;
+            color:black;
+        }
+        #D {
+            background-color: orange;
+            color: black;
+        }
+        #F {
+            background-color: red;
+            color: black;
+        }
+        select:has(option[value="A"]:checked) {
+            background-color: lime;
+            color: black;
+        }
+        select:has(option[value="B"]:checked) {
+            background-color: rgb(201, 250, 24);
+            color: black;
+        }
+        select:has(option[value="C"]:checked) {
+                background-color: yellow;
+                color: black;
+        }
+        select:has(option[value="D"]:checked) {
+            background-color: orange;
+            color: black;
+        }
+        select:has(option[value="F"]:checked) {
+            background-color: red;
+            color: black;
+        }
+    .checkbox {
+        vertical-align: middle;
+        /* opacity: .5; */
+        accent-color: light-dark(rgb(128, 126, 126), rgb(165, 165, 165));
+        transform: scale(1.2);
+        cursor: pointer;
+
+    }
+    #picBox {
+        bordeR: 1px solid gray;
+        background-color: light-dark(rgb(245, 245, 245), rgb(87, 87, 87));
+        border-radius: 6px;
+        margin: 5px;
+    }
+    .pic {
+        height: 4em;
+        width: 4em;
+        border: 2px solid light-dark(darkgray, black);
+        border-radius: 4px;
+        margin:5px;
+        overflow:hidden;
+        background-color: light-dark(rgb(228, 225, 222), rgb(150, 148, 148));
+        display: inline flow-root;
+        color: black;
+        cursor: text;
+    } 
+    .pic:hover {
+        background-color: light-dark(rgb(219, 213, 213), darkgray);
+    }  
+    #picBoxLabel {
+       vertical-align: top;
+       margin: 10px;
+       display: inline-block;
+    }
+    #saveTrade {
+        margin: 7px
+    }
+    #noteZoneContainer {
+        grid-area: "noteZone";
+        grid-column: span 2;
+        bordeR: 1px solid rgb(43, 43, 43);
+        background-color: light-dark(rgb(245, 245, 245), rgb(48, 47, 47));
+        border-radius: 6px;
+        margin: 5px;
+        padding: 5px;
+        color: rgb(160, 160, 160);
+        max-height: 30em;
+    }
+    #noteZone {
+        border: 2px solid rgb(114, 111, 111);
+        background-color: light-dark(rgb(255, 255, 255), rgb(34, 33, 33));
+        margin: 5px;
+        min-height: 7em;
+        border-radius: 7px;
+    }
+    #noteZone:hover {
+        cursor: text;
+    }
+/*------------------Show Trades-----------------*/
+#showTrades {
+     grid-area: "showTrades";
+     margin: 5px 0px;
+}
+    #todaypl {
+        margin: 10px;
+    }
+    .trade {
+        border: 4px solid light-dark(rgb(150, 148, 148), black);
+        margin: 5px;
+        background-color: light-dark(rgb(243, 239, 239), rgb(77, 77, 77));
+        position: float;
+        display: grid;
+        grid-template-areas: "buttons tradeData"
+    }
+    .trade div {
+        display: inline-block;
+    }
+    .buttons {
+        grid-area: "buttons";
+        align-self: center;
+        padding: 2px;
+    }
+        #tradeId {
+            vertical-align: center;
+            margin:5px;  
+        }
+        .editTradeButton {
+            height: 2.5em;
+            width: 2.7em;
+            vertical-align: middle;
+        }
+        .editButtonPic {
+            overflow: contain;
+            width: 100%;
+            height: 90%;
+        }
+        .delete {
+            color: rgb(255, 0, 0);
+            font-size: 1.2em;
+            width: 1.8em;
+            height: 1.7em;
+            vertical-align: middle;
+            padding: 4px;
+        }
+    .tradeData {
+        padding: .7em 0em .7em 0em;
+        width: 100%;
+        float: right;
+        grid-area: "tradeData";
+        margin: 2px;
+    }
+        .pl, .time, .length, .contracts, .rating, .countertrend {
+            padding: 3px;
+        }
+        .explanation {
+            border: 2px solid light-dark(rgb(163, 160, 160), black);
+            width: 4em;
+            height: 2.2em;
+            vertical-align: middle;
+            background-color: light-dark(rgb(204, 194, 194), gray);
+            overflow: clip;
+            padding: 2px;
+            border-radius: 3px;
+        } 
+        .explanation:hover .explanationZoom{
+            position: absolute;
+            background-color: light-dark(rgb(204, 194, 194), gray);
+            border: 2px solid light-dark(rgb(160, 160, 160), black);
+            padding: 4px;
+            overflow: auto;
+            max-width: 10em;
+            max-height: 10em;
+        }
+        .contracts {
+            /* background-color: light-dark(rgb(238, 112, 255), rgb(184, 4, 103)); */
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+        .rating {
+            /* background-color: light-dark(rgb(0, 235, 0), green); */
+            width: 16px;
+            text-align: center;
+        }
+        .savedPic {
+            bordeR: 2px solid light-dark(darkgray, black);
+            background-color: light-dark(rgb(214, 210, 210), gray);
+            width: 2em;
+            height: 2em;
+            margin: .5px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .savedPic img {
+           overflow: hidden;
+        }
+        .savedPic:hover {
+            bordeR: 2px solid light-dark(rgb(196, 196, 196), rgb(54, 54, 54));
+            background-color: light-dark(rgb(214, 210, 210), rgb(158, 155, 155));
+
+        }
+        .savedPicContainer{
+            vertical-align: middle;
+            margin: 0px;
+        }
+             #notificationBox {
+                background-color: light-dark(lightgray, rgb(43, 42, 42));
+                color: rgb(92, 91, 91);
+                padding: 5px;
+                margin: 5px;
+                position: relative;
+                border: 3px solid light-dark(gray, black);
+                border-radius: 3px;
+                font-size: 20px;
+                min-height: 5em;
+             }
+             #rulesTitle {
+                margin: 5px;
+             }
+             .notificationX{
+                visibility: hidden;
+             }
+             .redNotification, .yellowNotification, .blueNotification {
+                color: black;
+                font-size: 16px;
+                min-width: 20%;
+                max-width: 99%;
+                padding: 3px;
+                max-height: 2.2em;
+                overflow: hidden;
+                margin: 5px 2.5px 2.5px 2.5px;
+                display: inline-flex;
+             }
+             .redNotification {
+                background-color: light-dark(rgb(247, 69, 69), rgb(245, 44, 44));
+                font-weight: bold
+             }
+             .yellowNotification {
+                background-color: light-dark(yellow, yellow);
+             }
+             .blueNotification {
+                background-color: light-dark(rgb(81, 171, 255), rgb(0, 110, 255));
+             }
+/*-------------------------------------------Footer--------------------------------*/
+footer {
+    border: 4px solid black;
+    margin: 0px;
+    padding: 5px;
+}
+/*------------------------------------empty screen darkener, alert bars for editing/etc hidden things---------------*/
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+#screenDarkener {
+    position: fixed;
+    margin: none;
+    padding: none;
+    width: 100%;
+    min-height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom:0;
+    background-color: light-dark(rgba(169, 169, 169, 0.822),  rgba(46, 45, 45, 0.76));
+    z-index: 2;
+}
+#closePic {
+    z-index: 2;
+    font-size:3em;
+    font-weight: bold;
+    color:rgb(0, 0, 0);
+    position: fixed;
+    top: 17%;
+    justify-self: right;
+    user-select: none;
+    bordeR-radius: 3rem;
+    margin: .5em;
+    padding: 10px 20px;;
+    background-color: light-dark(white, rgb(180, 176, 176));
+}
+#closePic:hover {
+        background-color: light-dark(lightgray, gray);
+        color: rgb(0, 0, 0);
+}
+#closePic:active {
+        background-color: rgb(0, 0, 0);
+        background-color: light-dark(lightgray, rgb(202, 202, 202));
+}
+#activePic {
+        position: fixed;
+        width: 80%;
+        height: 80%;
+        left: 50%;
+        right: 50%;
+        top: 60%;
+        z-index: 10;
+        transform: translate(-50%, -50%);
+        scale: 1;
+        object-fit: contain;
+        contain: content;
+        display: flex;
+        justify-content:center;
+        align-content: center;
+}
+#activePic img {
+    min-height: 1%;
+    min-width: 1%;
+    max-height: 99%;
+    max-width: 99%;
+    object-fit: contain;
+    contain: content;
+}
+.deleteTradeAlert {
+    border: 4px solid rgb(138, 136, 136);
+    background-color: rgb(107, 103, 103);
+    position: absolute;
+    margin: 5px;
+    padding: 10px;
+    transform: translate(0, -40%);
+    visibility: hidden;
+    z-index: 4;
+}
+.tradeDelete{
+    position: relative;/*z index only works with positioned items*/
+    background-color: rgb(0, 0, 0);
+    border: 2px solid rgb(194, 0, 0);
+    z-index: 4;
+}
+.deleteButton {
+    padding: 5px;
+    margin: 5px;
+}
+.deleteTradeMessage {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+.tradeEdit {
+    position: relative;
+    border: 2px solid rgb(255, 255, 255);
+    z-index: 4;
+    color: black;
+}
+#editTradeContainer {
+    z-index: 2;
+}
+#editTradeContainer input , #editTradeContainer select, #editTradeContainer #editPicBox div{
+    background-color: rgb(206, 206, 206);
+    border: 1px solid rgb(53, 52, 52);
+    color: black;
+    accent-color: black;
+}
+#editTradeContainer input[type = "checkbox"] {
+    accent-color: white;
+}
+#editTradeContainer #editPicBox {
+    background-color: rgb(119, 118, 118);
+    border: 1px solid rgb(70, 69, 69);
+    margin: 10px;
+}
+#editPicBox label {
+    margin: 5px;
+}
+.editTradeButtons {
+    min-width: 10px;
+    min-height: 10px;
+    padding: 5px;
+    background-color: rgb(122, 119, 119);
+    border: 1px solid rgb(99, 98, 98);
+    margin: 5px;
+
+}
+/*-----------------------------------------------------------------Stat page and normal stuff_---------------------*/
+    #body {
+        border: 2px solid blue;
+        border: none;
+
+    }
+    main{
+        display: inline;
+    }
+    #showMonthlyTrades {
+        border: 2px solid rgb(70, 29, 29);
+    }
+    #tradeData {
+        bordeR: 2px solid blue;
+    }
+    #fakeHeader{
+        visibility: hidden;
+        overflow: visible;
+        top: 0;
+        right: 0;
+        left: 0;
+        font-size: 20px;
+        box-shadow: 0px 5px 5px black;
+        border: 5px dotted white;
+        background-color: white;
+        color: black;
+        grid-template-rows:1fr 1fr;
+        align-self: center;
+        grid-template-areas: 
+            "topHeader"
+            "nav"
+    }
+    @media (width > 1100px) {
+        #fakeHeader {
+            margin: 0px;
+        }
+    }
+    @media (width < 950px) {
+        #fakeHeader {
+            margin-bottom: 3em
+        }
+    }
+#allStatsContainer {
+    border: 2px solid black;
+    display: inline;
+    background-color: white;
+}
+#allStatsContainer input{
+    accent-color: red;
+}
+#tradeStatsContainer {
+    border: 2px solid black;
+    min-height: 10em;
+}
+#tradeStatsContainer * {
+    all: unset;
+    display: inline-block;
+    min-width: 1em;
+    max-width: 9em;
+    margin: 5px;
+    padding: 5px;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: rgb(180, 178, 178);
+    margin: 10px;
+    /* display: inline-block; */
+    /* justify-self: center; */
+    display: inline;
+
+}
+tr:nth-of-type(even) td{
+    background-color: rgb(54, 53, 53);
+}
+/* thead{
+    background-color: rgb(97, 97, 97);
+} */
+th{
+    border: 2px solid black;
+    margin: 0;
+    padding: 5px;
+}
+td {
+    border: 2px solid black;
+    padding: 5px;
+    text-align: center;
+}
+/* #otherStats {
+     justify-self: right;
+     align-self: top;
+} */
+.notificationBox {
+    /* border: 2px solid black; */
+    margin: 5px;
+    padding: 10px;
+    display: inline-block;
+    /* border-radius: 5px;
+    background-color: rgb(85, 84, 84); */
+    min-width: 20em;
+}
+.notificationBox div, .notificationBox button {
+   display: inline;
+}
+.notificationBox div {
+    margin: 10px;
+    /* border: 1.5px solid black; */
+    padding: 10px;
+    background-color: rgb(99, 99, 99);
+    border-radius: 5px;
+    font-size: 18px;
+}

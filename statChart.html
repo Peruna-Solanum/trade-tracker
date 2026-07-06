@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<script src="statChart.js" defer></script>
+<title>Trade Tracker: Chart Page</title>
+<link rel="icon" type="images/favicon.ico">
+<link rel="stylesheet" href="tt.css">
+<style>
+    #tradeRules {
+        border: 2px solid black;
+        margin: 5px;
+    }
+    #submitRules {
+        padding: 5px;
+        margin: 5px;
+    }
+input[type = "checkbox"] {
+    accent-color: white;
+    vertical-align: middle;
+    margin: 5px;
+}
+</style>
+</head>
+
+<body id="body">
+        <header>
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Stat/Chart</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+                <a href="tt2.html">Home</a>
+                <a href="statChart.html" class="youAreHere">Stats/Charts</a>
+                <a href="allTrades.html">All Trades</a>
+                <a href="pastData.html">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html">New File</a>
+                <a href="settings.html">Settings</a>
+                <a href="">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+        </nav>
+        </header>
+            <div id="fakeHeader">
+                <div id="faketopHeader">
+                <a href="" id="logo">Trade Tracker</a>
+                <div id="file">File:</div>
+                <div id="changeFile"></div>
+                <!-- <input type="file" id="changeFile" accept=".db"/> -->
+                <label for="changeFile" id="changeFileButton">Change File:</label>
+                <div id="date"></div>
+                <div id="happyFace"></div>
+            </div>
+            <nav>
+                <a href="">Home</a>
+                <a href="">Settings</a>
+                <a href="" class="youAreHere">Stats/Charts</a>
+                <a href="">All Data</a>
+                <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a>
+                <a href="">About (like release notes)</a>
+                <a href="">Tutorial</a>
+            </nav>
+            </div>
+        <div id="emptyStandard"></div>
+        <main>
+            <div id="tradeRules">
+                <h2>Select Options:</h2>
+                <select id="tradeTimeFrame">
+                        <option id="allSelect" value="all"> All Trades:</option>
+                        <option id="monthSelect" value="month">Month:</option>
+                        <option id="byWeekSelect" value="byWeek">By Week:</option>
+                        <option id="week1Select" value="week1">Week 1:</option>
+                        <option id="week2Select" value="week2">Week 2:</option>
+                        <option id="week3Select" value="week3">Week 3:</option>
+                        <option id="week4Select" value="week4">Week 4:</option>
+                        <option id="week5Select" value="week5"> Week 5:</option>
+                        <option id="quarterSelect" value="quarter">Quarter:</option>
+                        <option id="customTimeFrame" value="customTimeFrame">Custom: WORK IN PROGRESS</option>
+                </select>
+                <select id="collation">
+                    <option id="multiContract" value="multiContract">Multi-Contract:</option>
+                    <option id="singleContract" value="singleContract">Single-Contract:</option>
+                    <option id="dailyTotal" value="dailyTotal">Daily Totals:</option>
+                    <option id="dayOfWeek" value="dayOfWeek">Day of Week:</option>
+                </select>
+                <select id="custom">
+                    <option id="extras" value="">--Extras:--</option>
+                    <option id="dte" value="dte">Dte: WORK IN PROGRESS</option>
+                    <option id="rating" value="rating">By Rating:</option>
+                    <option id="callPut" value="callPut">Call/Put:</option>
+                </select>
+                <label>
+                    All Stats:
+                    <input type="checkbox" id="allStats" value="allStats" onclick="absoluteOff()">
+                </label>
+                <label>
+                    Absolutely All:
+                    <input type="checkbox" id="absolutelyAll" value="absolutelyAll" onclick = "allOff()">
+                </label>
+                <button type="button" id="submitRules">Calculate Stats:</button>
+            </div>
+            </div>
+            <div id="statZone">
+                <h2>Stats:</h2>
+                <template id="tableTemplate">
+                    <table id="statsTable">
+                            <caption id="caption">
+                            </caption>
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col" id="tableName"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Num Trades: </th>
+                                <td id="numTrades"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Num Wins:</th>
+                                <td id="numWins"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Num Losses:</th>
+                                <td id="numLosses"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">P/L:</th>
+                                <td id="tablePl"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Win Ratio:</th>
+                                <td id="WW"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Avg W:</th>
+                                <td id="tableAvgW"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Avg L:</th>
+                                <td id="tableAvgL"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Avg:</th>
+                                <td id="totalAvg"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Projection</th>
+                                <td id="projection"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">W:L Ratio:</th>
+                                <td id="wR"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
+            </div>
+        </main>
+    <footer>
+        <h4> TODO: Stats Page Specific</h4>
+        <ul>
+            <li>put in top nav portion of the screen (next to the smiley face) the monthly p/l, WW%, and projection for the month (using past month's length)</li>
+            <li>Put charts in the past data section (it makes more sense there)</li>
+            <li>actually show the data (albiet in a limited way with no edit/delete buttons to make sure the trades gathered are the correct ones)</li>
+            <li>color charts based on if they are better than the past month chart or whatever, but get there later</li>
+            <li>create warning for trades that havenothingstat-wise just in case</li>
+            <li>
+                Also have it do data for each day of the week including showing the data for that (like as a normal table)
+            </li>
+            <li>Have it say a message on whether or not you met your goals or if there is a lot you have to work on</li>
+            <li>Make it so the add Everything button just grays out everything else (other than timeframe)</li>
+            <li>add in an option for outlier- such as sick, weird issue, and even period cycle (this is some day though)</li>
+            <li>Add a little information bubble for totalAvg, projection (make it take into account the avg amt of trades you make,so it would be how muych you'd make if that time frame was expanded to either 100 trades or a year either one) and win/loss ratio (but prob don't make w/loss ratio for ash)</li>
+            <li>for DTE allow user to input the ranges that they think are important for DTE, </li>
+            <li>Have settings so the stats page doesn't show stats you're not looking for</li>
+            <li>Make this data printable/saveable elewhere</li>
+            <li> have it populate w/the options that you actually use (ex: bazinga strat), not just hard-writing it in.</li>
+            <li> allow for custom date ranges eventually (w/in the same year)</li>
+            <li>avg trade length or time started etc.</li>
+            <li>Eventually create sliders for data with ranges</li>
+            <li>create modules for everything</li>
+        </ul>
+    </footer>
+</body>
+</html>

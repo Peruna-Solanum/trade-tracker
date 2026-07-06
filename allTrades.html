@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<script src="allTrades.js" defer></script>
+<title>Trade Tracker: All Trades</title>
+<link rel="icon" type="images/favicon.ico">
+<!-- <link rel="stylesheet" href="tt.css"> -->
+ <link rel="stylesheet" href="tt.css">
+<style>
+</style>
+</head>
+
+<body id="body">
+            <div id="div"></div>
+            <div id="screenDarkener" class="hidden" ></div>
+            <div id="closePic" class="hidden" >X</div>
+        <header>
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Home</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+                <a href="tt2.html">Home</a>
+                <a href="statChart.html">Stats/Charts</a>
+                <a href="allTrades.html" class="youAreHere">All Trades</a>
+                <a href="pastData.html">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html">New File</a>
+                <a href="settings.html">Settings</a>
+                <a href="">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+        </nav>
+        </header>
+        <div id="fakeHeader">
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Home</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+            <a href="tt2.html">Home</a>
+            <a href="statChart.html">Stats/Charts</a>
+            <a href="allTrades.html"class="youAreHere">All Trades</a>
+            <a href="pastData.html">Past Data</a>
+            <a href="">Export Data</a>
+            <a href="">Import Data</a>
+            <a href="">Combine Files</a>
+            <a href="settings.html">Settings</a>
+            <a href="">About (like release notes)</a>
+            <a href="">Tutorial</a>
+        </nav>
+    </div>
+        <div id="emptyStandard"></div>
+
+        <main>
+            <div id="activePic" class="hidden"></div>
+                <h2>Trades:</h2>
+                    <select id="tradeTimeframe">
+                        <option id="allSekect" value="all"> All Trades</option>
+                        <option id="monthSelect" value="month">Month:WORK IN PROGRESS</option>
+                        <option id="byWeekSelect" value="byWeek">By Week:WORK IN PROGRESS</option>
+                        <option id="week1Select" value="week1">Week 1:WORK IN PROGRESS</option>
+                        <option id="week2Select" value="week2">Week 2:WORK IN PROGRESS</option>
+                        <option id="week3Select" value="week3">Week 3:WORK IN PROGRESS</option>
+                        <option id="week4Select" value="week4">Week 4:WORK IN PROGRESS</option>
+                        <option id="week5Select" value="week5"> Week 5:WORK IN PROGRESS</option>
+                        <option id="quarterSelect" value="quarter">Quarter:WORK IN PROGRESS</option>
+                        <option id="customTimeFrame" value="customTimeFrame">Custom: WORK IN PROGRESS</option>
+                    </select>
+                <p id="todaypl"></p>
+                <div id="tradeZone">
+                    <template id="template">
+                        <div id="trade" class="trade">
+                            <div class="buttons">
+                                <div id="tradeId"></div>
+                                <button type="button" class="delete" id="x" onclick="deleteTrade(this.id)">X</button>
+                                 <div id="deleteTradeAlert" class="deleteTradeAlert">
+                                    <p class="deleteTradeMessage">Delete Trade? This action cannot be undone.</p>
+                                    <button type="button" id="yesDelete" class="deleteButton">Yes</button>
+                                    <button type="button"id="noDelete" class="deleteButton">No</button>
+                                </div>
+                                <button type="button" class="editTradeButton" id="edit" onclick="editTrade(this.id)"><img  class="editButtonPic" src="images/editClearBackground.png"></button>
+                            </div>
+                            <div class="tradeData">
+                                <div id="tradeData">
+                                    <div class = "pl"id="pl">P/L:</div>
+                                    <div class="tradeDate" id="tradeDate">Date: </div>
+                                    <div class = "time" id="time">Time:</div>
+                                    <div class="length" id="length">Length:</div>
+                                    <div class="explanation"><div class="explanationZoom"id="explanation"></div></div>
+                                    <div class="contracts" id="contractNum"></div>
+                                    <div class="rating"id="rating"></div>
+                                    <div class="callPut" id="callPut"></div>
+                                </div>
+                                <div class="savedPicContainer" id="savedPicContainer">
+                                    <div class="savedPic" id="pic1" ondblclick="showPic(this.id)"></div>
+                                    <div class="savedPic" id="pic2" ondblclick="showPic(this.id)"></div>
+                                    <div class="savedPic" id="pic3" ondblclick="showPic(this.id)"></div>
+                                    <div class="savedPic" id="pic4" ondblclick="showPic(this.id)"></div>
+                                </div>
+                        </div>
+                    </div>
+                    </template>
+           
+
+
+            </div>
+            <template id="editTradeTemplate">
+                <div id="editTradeContainer">
+                    <input type="number" step=".01" id="edittradeAmt" placeholder ="P/L:" autocomplete="off" required/>
+                    <input type="date" id="edittradeDate" placeholder = dateCalculator/>
+                    <input type="text" id="edittradeStart" placeholder = "Trade Start:" autocomplete="off"/>
+                    <input type="number" id="edittradeLength" placeholder = "Trade Length:" autocomplete="off">
+                    <input type="text" placeholder="Explanation:"id="edittradeExplanation" autocomplete="off"/>
+                    <input type="number" id="edittradeContracts" placeholder="Contracts #:"/>
+                    <input type="number" id="editdte" placeholder="dte:">
+                    <select name="grade" id="editselectGrade">
+                        <option value="">--Trade Rating--</option>
+                        <option id="editA" value="A">A</option>
+                        <option id="editB" value="B">B</option>
+                        <option id="editC" value="C">C</option>
+                        <option id="editD" value="D">D</option>
+                        <option id="editF" value="F">F</option>
+                    </select>  
+                    <select name="callPut" id="editcallPut">
+                        <option id ="call" value="call">Call</option>
+                        <option id="editput" value="put">Put</option>
+                    </select>
+                    <div id="editCustomBox">
+                    </div>
+                    <div id="editPicBox">
+                            <label for ="pic1" id="editpicBoxLabel">Pics:</label>
+                        <div id="editpic1" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                        <div id="editpic2" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                        <div id="editpic3" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                        <div id="editpic4" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                    </div>
+                </div>
+            </template>
+        </main>
+        <footer>
+            <ul>
+                <li>Add in a notification with parts missing so you can fix those errors</li>
+            </ul>
+        </footer>
+</body>
+</html>

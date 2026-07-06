@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<script src="settings.js" defer></script>
+<title>Trade Tracker: New File:</title>
+<link rel="icon" type="images/favicon.ico">
+ <link rel="stylesheet" href="tt.css">
+<style>
+    #pageTitle {
+        font-size: 2.5em;
+    }
+    h2 {
+        display: block;
+        margin: 10px;
+    }
+h1, #h1Par {
+    text-align: center;
+}
+hr {
+    border:1px solid black;
+    margin: 10px;
+}
+p {
+    margin: 10px;
+}
+.majorSection{
+    margin: 10px;
+    border: 3px solid black;
+    background-color: rgb(75, 74, 74);
+}
+ input, select{
+    margin: 10px;
+    accent-color: lightgray;
+}
+    .checkmark{
+        background-image: url('images/checkmark.png');
+           background-repeat: no-repeat;
+        background-position: center;
+}
+.XMark {
+   background-image: url('images/xMark.png');
+   background-repeat: no-repeat;
+   background-position: center;
+}
+.editList {
+    border: 2px solid black;
+    background-color: lightgray;
+}
+.XY {
+    background-size: 95%;
+    color: rgba(238, 0, 0, 0);
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+
+}
+/* button {
+    background-color: lightgray;
+    bordeR: 1px solid black;
+    color: black;
+}
+button:hover {
+    background-color: rgb(196, 195, 195);
+} */
+.editButton {
+    align-self: center;
+    margin: 5px;
+}
+.listName {
+    align-self: center;
+    font-weight: bold;
+    margin: 10px;
+}
+li {
+    list-style: none;
+    display: flex;
+    padding: 10px;
+    /* border: 2px solid black */
+}
+.noClick{
+    pointer-events: none;
+}
+label {
+    margin: 10px;
+}
+input {
+    vertical-align: middle;
+}
+.settingList {
+    border: 2px solid rgb(95, 94, 94);
+    background-color: rgb(88, 87, 87);
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+#settingCenter {
+    display: flex;
+    justify-content: space-around;
+}
+#inputCustom {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(117, 116, 116);
+    border: 1px solid rgb(194, 190, 190);
+    border-radius: 5px;
+    margin-top: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+#inputCustom p, #inputCustom input[type = "text"] {
+    display: flex;
+    align-self: center;
+}
+#inputCustom button {
+    margin-right: 10px;
+}
+#submitCustom {
+    background-color: rgb(150, 146, 146);
+}
+#newName {
+    background-color: rgb(78, 78, 78);
+}
+#newColor {
+    background-color: rgb(148, 146, 146);
+        border: none;
+    border-radius: 3px;
+}
+#newColor:hover {
+    background-color: rgb(184, 181, 181);
+}
+#newFileName {
+    min-width:7em;
+}
+.notReady {
+    /* pointer-events: none; */
+    color: gray;
+    border: 1px solid gray;
+    background-color: rgb(112, 112, 112)
+}
+.ready {
+    color: white;
+    border: 1px solid white;
+}
+#createNewFile {
+    margin: 15px;
+
+    text-align: center;
+        /* display: block; */
+        width: 7.5em;
+        padding: 10px;
+        font-size: 1.3em;
+        border-radius: 10px;
+}
+</style>
+</head>
+
+<body id="body">
+            <div id="div"></div>
+            <div id="screenDarkener" class="hidden" ></div>
+            <div id="closePic" class="hidden" >X</div>
+        <header>
+            <div id="topHeader">
+                <a href="" id="logo">Trade Tracker: New File</a>
+                <div id="file">File:</div>
+                <div id="changeFileButton">File:</div>
+                <div id="date"></div>
+                <div id="happyFace"></div>
+                <div id="monthPL">P/L:</div>
+                <div id="monthWW">Win %:</div>
+            </div>
+            <nav>
+                <a href="tt2.html">Home</a>
+                <a href="statChart.html">Stats/Charts</a>
+                <a href="allTrades.html">All Trades</a>
+                <a href="pastData.html">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html"class="youAreHere">New File</a>
+                <a href="settings.html" >Settings</a>
+                <a href="">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+            </nav>
+        </header>
+        <div id="fakeHeader">
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Home</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+            <a href="tt2.html">Home</a>
+            <a href="statChart.html">Stats/Charts</a>
+            <a href="allTrades.html"class="youAreHere">All Trades</a>
+            <a href="pastData.html">Past Data</a>
+            <a href="">Export Data</a>
+            <a href="">Import Data</a>
+            <a href="">Combine Files</a>
+            <a href="settings.html">Settings</a>
+            <a href="">About (like release notes)</a>
+            <a href="">Tutorial</a>
+        </nav>
+    </div>
+        <div id="emptyStandard"></div>
+    <main>
+        <h1 id="pageTitle">New File:</h1>
+        <p id="h1Par">Follow the steps to create a new file:</p>
+        <div id="confirmSettingsBox" class="majorSection">
+            <h1>1. Confirm Settings:</h1>
+            <p>Confirm that your notifications, hidden/shown settings, and your custom settings are correct.
+                While notifications and what is hidden/shown can be changed later, you CANNOT add/delete custom
+                tags after the file is made (since that could delete important data).
+            </p>
+        <hr>
+            <h2>Notifications:</h2>
+<input type = "text" id="inputNotification" placeholder="Notification-Text">
+<select id="notificationSelect">
+    <option value="">--Color:--</option>
+    <option id="red" value="red">Red</option>
+    <option id="yellow" value="yellow">Yellow</option>
+    <option id="blue" value="blue">Blue</option>
+</select>
+<button type="button" id="addNotification">Add Notification:</button>
+
+<ul id="notificationList">
+</ul>
+    <template id="notificationTemplate">
+        <div id="notification" class="notificationBox">
+            <button type="button" id="notifX" onclick="deleteNotification(this.id)">X</button>
+            <div id="notificationText"></div>
+            <div id="notificationColor"></div>
+        </div>
+    </template>
+<hr>
+<h2>Other Settings:</h2>
+<div id="settingCenter">
+<div class="settingList">
+        <h3>Hidden:</h3>
+        <ul id="hiddenList"></ul>
+</div>
+<div class="settingList">
+    <h3>Quick Show:</h3>
+    <ul id="quickShowList"></ul>
+</div>
+<div class="settingList" id="customListBox">
+    <h3>Custom:</h3>
+    <div id="inputCustom">
+            <p>New Custom:</p>
+            <input type="text" id="newName" placeholder = "Name">
+            <label>
+                <input type="checkbox" id="newHidden">
+                Hidden:
+            </label>
+            <label>
+                <input type="checkbox" id="newQuickShow">
+                Quick Show:
+            </label>
+            <label>
+                Color:
+                <input type="color" id="newColor">
+            </label>
+            <button type="button" id="submitCustom" class="editButton">Save:</button>
+        </div>
+    <ul id="customList">
+    
+    </ul>
+</div>
+</div>
+<template id='listTemplate'>
+    <li id="bullet">
+        <button type="buttom" id="cancelButton" onclick="cancelEdit()" class="hidden">Cancel:</button>
+        <button type="button" id="editButton" class="editButton" onclick="editSetting(this.id)"></button>
+        <div id="XY" class = "XY"></div>
+        <div id="listName" class="listName"></div>
+    </li>
+</template>
+<template id="customTemplate">
+    <li id="customBullet" class="hasDelete">
+        <button type="button" id="deleteCustom" class="editButton" onclick="deleteCustom(this.id)">Delete:</button>
+        <button type="button" id="cancelCustom" onclick="cancelEdit()" class="hidden">Cancel:</button>
+        <button type="button" id="customEdit" class="editButton" onclick="editCustom(this.id)">edit</button>
+        <div id="customName" class="listName"></div>
+        <label class="noClick" id="hiddenLabel">
+            <input type="checkbox" id="hiddenCheck">
+            Hidden:
+        </label>
+        <label class="noClick" id="quickShowLabel">
+            <input type="checkbox" id="quickShowCheck">
+            QuickShow:
+        </label>
+        <label class="noClick" id="colorLabel">
+            Color:
+            <input type="color" id="colorCheck">
+        </label>
+    </li>
+</template>
+        </div>
+        <div class="majorSection">
+            <h1>2. File Name:</h1>
+            <p>Select the file name and file location. NOTE: The file name is j2   bst the plain text, the .db will be added automatically</p>
+            <hr>
+            <input type="text" id="newFileName" placeholder = "New File Name:">
+            <button type="Button" id="fileLocationButton" onclick="saveFolderLocation()">Pick File Location:</button>
+            <button type="button" id="createNewFile" class="notReady" class="bigButton">Create New File:</button>
+        </div>
+    </main>
+<!-- <footer>
+    <ul>Todo:
+
+    </ul>
+</footer> -->
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<head lang="en">
+<meta charset="UTF-8">
+<script src="tt2.js" defer></script>
+<title>Trade Tracker: Main Page</title>
+<link rel="icon" type="images/favicon.ico">
+<link rel="stylesheet" href="tt.css">
+</head>
+
+<body id="body">
+    <div id="div"></div>
+            <div id="screenDarkener" class="hidden" ></div>
+            <div id="closePic" class="hidden" >X</div>
+        <header>
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Home</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+                <a href="tt2.html" class="youAreHere">Home</a>
+                <a href="statChart.html">Stats/Charts</a>
+                <a href="allTrades.html">All Trades</a>
+                <a href="pastData.html">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html">New File</a>
+                <a href="settings.html">Settings</a>
+                <a href="about.html">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+        </nav>
+        </header>
+        <div id="fakeHeader">
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Home</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+                <a href="tt2.html" class="youAreHere">Home</a>
+                <a href="statChart.html">Stats/Charts</a>
+                <a href="allTrades.html">All Trades</a>
+                <a href="pastData.html">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html">New File</a>
+                <a href="settings.html">Settings</a>
+                <a href="">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+        </nav>
+    </div>
+        <div id="empty"></div>
+        <div id="emptyStandard"></div>
+        <main id = "main">
+                        <div id="activePic" class="hidden"></div>
+            <div id="showTrades">
+                <div id="notificationBox">
+                    <h3 id="rulesTitle">Rules:</h3>
+                </div>
+                <h2>Show Trades:</h2>
+                <select id="tradeTimeframe">
+                    <option id = "todaySelect" value="today">Today</option>
+                    <option id="weekSelect" value="week">This Week</option>
+                </select>
+                <p id="todaypl"></p>
+                <div id="tradeZone">
+                        <template id="template">
+                        <div id="trade" class="trade">
+                            <div class="buttons">
+                                <div id="tradeId"></div>
+                                <button type="button" class="delete" id="x" onclick="deleteTrade(this.id)">X</button>
+                                 <div id="deleteTradeAlert" class="deleteTradeAlert">
+                                    <p class="deleteTradeMessage">Delete Trade? This action cannot be undone.</p>
+                                    <button type="button" id="yesDelete" class="deleteButton">Yes</button>
+                                    <button type="button"id="noDelete" class="deleteButton">No</button>
+                                </div>
+                                <button type="button" class="editTradeButton" id="edit" onclick="editTrade(this.id)"><img  class="editButtonPic" src="images/editClearBackground.png"></button>
+                            </div>
+                            <div class="tradeData">
+                                <div id="tradeData">
+                                    <div class = "pl"id="pl">P/L:</div>
+                                    <div class = "time" id="time">Time:</div>
+                                    <div class="length" id="length">Length:</div>
+                                    <div class="explanation"><div class="explanationZoom"id="explanation"></div></div>
+                                    <div class="contracts" id="contractNum"></div>
+                                    <div class="rating"id="rating"></div>
+                                </div>
+                                <div class="savedPicContainer" id="savedPicContainer">
+                                    <div class="savedPic" id="pic1" ondblclick="showPic(this.id)"></div>
+                                    <div class="savedPic" id="pic2" ondblclick="showPic(this.id)"></div>
+                                    <div class="savedPic" id="pic3" ondblclick="showPic(this.id)"></div>
+                                    <div class="savedPic" id="pic4" ondblclick="showPic(this.id)"></div>
+                                </div>
+                        </div>
+                    </div>
+                    </template>
+                    </div>
+                    </div>
+            </div>
+            <div id="addTrade">
+                <h2>Add Trade:</h2>
+                <div id="clearTrade">X</div>
+                <!-- <div id="form" onSubmit="return false;"> -->
+                <form id="form">
+                    <input type="number" step=".01" id="tradeAmt" placeholder ="P/L:" autocomplete="off" required/>
+                    <input type="date" id="tradeDate" placeholder = dateCalculator/>
+                    <input type="text" id="tradeStart" placeholder = "Trade Start:" autocomplete="off"/>
+                    <input type="number" id="tradeLength" placeholder = "Trade Length:" autocomplete="off">
+                    <input type="text" placeholder="Explanation:"id="tradeExplanation" autocomplete="off"/>
+                    <input type="number" id="tradeContracts" placeholder="Contracts #:"/>
+                    <input type="number" id="dte" placeholder="dte:">
+                    <select name="grade" id="selectGrade">
+                        <option value="">--Trade Rating--</option>
+                        <option id="A" value="A">A</option>
+                        <option id="B" value="B">B</option>
+                        <option id="C" value="C">C</option>
+                        <option id="D" value="D">D</option>
+                        <option id="F" value="F">F</option>
+                    </select>  
+                    <select name="callPut" id="callPut">
+                        <option id="noCallPut" value="">Call/Put:</option>
+                        <option id ="call" value="call">Call</option>
+                        <option id="put" value="put">Put</option>
+                    </select>
+                    <div id="customContainer">
+                    </div>
+                    <div id="picBox">
+                            <label for ="pic1" id="picBoxLabel">Add Pics Here:</label>
+                        <div id="pic1" class="pic" contenteditable = "true" ondblclick="showPic(this.id)"></div>
+                        <div id="pic2" class="pic" contenteditable = "true" ondblclick="showPic(this.id)"></div>
+                        <div id="pic3" class="pic" contenteditable = "true" ondblclick="showPic(this.id)"></div>
+                        <div id="pic4" class="pic" contenteditable = "true" ondblclick="showPic(this.id)"></div>
+                    </div>
+                    <button id="saveTrade" type="submit">Save Trade:</button>
+                </form>
+                <div id="noteZoneContainer">Extra Notes:<div id="noteZone" contenteditable="true"></div></div>
+            </div>
+            <template id="editTradeTemplate">
+                <div id="editTradeContainer">
+                    <input type="number" step=".01" id="edittradeAmt" placeholder ="P/L:" autocomplete="off" required/>
+                    <input type="date" id="edittradeDate" placeholder = dateCalculator/>
+                    <input type="text" id="edittradeStart" placeholder = "Trade Start:" autocomplete="off"/>
+                    <input type="number" id="edittradeLength" placeholder = "Trade Length:" autocomplete="off">
+                    <input type="text" placeholder="Explanation:"id="edittradeExplanation" autocomplete="off"/>
+                    <input type="number" id="edittradeContracts" placeholder="Contracts #:"/>
+                    <input type="number" id="editdte" placeholder="dte:">
+                    <select name="grade" id="editselectGrade">
+                        <option value="">--Trade Rating--</option>
+                        <option id="editA" value="A">A</option>
+                        <option id="editB" value="B">B</option>
+                        <option id="editC" value="C">C</option>
+                        <option id="editD" value="D">D</option>
+                        <option id="editF" value="F">F</option>
+                    </select>  
+                    <select name="callPut" id="editcallPut">
+                        <option id ="call" value="call">Call</option>
+                        <option id="editput" value="put">Put</option>
+                    </select>
+                    <div id="editCustomBox">
+                    </div>
+                    <div id="editPicBox">
+                            <label for ="pic1" id="editpicBoxLabel">Pics:</label>
+                        <div id="editpic1" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                        <div id="editpic2" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                        <div id="editpic3" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                        <div id="editpic4" class="pic" contenteditable = "true" ondblclick="showEditPic(this.id)"></div>
+                    </div>
+                </div>
+            </template>
+        </main>
+        <footer>
+            <h4>TODO:</h4>
+            <ul>
+                <li>expand explanation in form when using it, fix showTrades, have dialog when things are 
+                    missing from some ofthe trades before looking for settings, show monthly trades by date
+                    
+                </li>
+                <li>Make little hover blurbs where you can hover over quickpl and ww or something 
+                    and they explain a little more about it or something
+                </li>
+                <li>don't just make it call/put, just in case poeple forget to put in the type they use</li>
+                <li>make the code list/naming conventions look right in py, slqite, make modules</li>
+                <li>add past data into the stats eventually (in the settings tab, but not right now)</li>
+                <li>right now the P/L: won't look right if it's negative, the $ will be before the - 
+                    and I don't wanna fix it right now. Also eventually make custom ranges for the happy faces 
+                    and such</li>
+                <li>Create option for it to be counted vs non-Counted</li>
+                <li>add a custom option for trade pricing, then you could do ranges</li>
+                <li>add contract price, ex, search by 2.00 vs 3.00 vs 1.59</li>
+                <li>Make it work for multiple months (ex, multiple quarters and such), up to a year</li>
+                <li>Make it so the trades can be saved elsewhere with extra copies or something</li></liu>
+                <li> make a hide trade button? that would be kind of cool (but could defeat the purpose)</li>
+                <li>store file/choose file/new file/connect to file</li>
+                <li>export to excell option</li>
+                <li>create tutorial and other pages as well</li>
+                <li>click to zoom pics, have a way to save the photos that are saved in there if possible</li>
+                <li>disclaimer (so people don't xss themselves)</li>
+                <li>giant x on screen when you reach your daily goal</li>
+                <li>fake trade/backtesting mode</li>
+                <li>keep data month to month (prob in original data chart)</li>
+                <li> create a way to make a new dataChart/save data chart/etc.</li>
+                <li>Make sure the " and ' s are the samethroughtout the document, and that everything has the proper accessibility roles etc.</li>    
+                <li> Allow people to change the colors of the trades that are shown to either all gray or maybe different colors if they want to (prob using the settings file)</li>
+                <li>Make the explanation input expand when typing so you can see it, same with the pic containers</li>
+                <li> add little x buttons on the pictures so you don't have to ctrl + a every time
+                <li> allow custom notification banners at the top obviously
+                </ul>
+            </ul>
+        </footer>
+
+</body>
+</html>

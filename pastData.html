@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<script src="statChart.js" defer></script>
+<title>Trade Tracker: Chart Page</title>
+<link rel="icon" type="images/favicon.ico">
+<link rel="stylesheet" href="tt.css">
+<style>
+</style>
+</head>
+
+<body id="body">
+        <header>
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Past Data</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+                <a href="tt2.html">Home</a>
+                <a href="statChart.html">Stats/Charts</a>
+                <a href="allTrades.html">All Trades</a>
+                <a href="pastData.html" class="youAreHere">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html">New File</a>
+                <a href="settings.html">Settings</a>
+                <a href="">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+        </nav>
+        </header>
+            <div id="fakeHeader">
+                <div id="faketopHeader">
+                <a href="" id="logo">Trade Tracker</a>
+                <div id="file">File:</div>
+                <div id="changeFile"></div>
+                <!-- <input type="file" id="changeFile" accept=".db"/> -->
+                <label for="changeFile" id="changeFileButton">Change File:</label>
+                <div id="date"></div>
+                <div id="happyFace"></div>
+            </div>
+            <nav>
+                <a href="">Home</a>
+                <a href="">Settings</a>
+                <a href="" class="youAreHere">Stats/Charts</a>
+                <a href="">All Data</a>
+                <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a>
+                <a href="">About (like release notes)</a>
+                <a href="">Tutorial</a>
+            </nav>
+            </div>
+        <div id="emptyStandard"></div>
+        <main>
+            <div id="tradeRules">
+                <h2>Select Options:</h2>
+                <form id="tradeSelectOptions">
+                    <select id="tradeTimeframe">
+                        <option id="allSekect" value="all"> All Trades</option>
+                        <option id="quarterSelect" value="quarter">Quarter</option>
+                        <option id="monthSelect" value="month">Month</option>
+                        <option id="byWeekSelect" value="byWeek">By Week</option>
+                        <option id="week1Select" value="week1">Week 1</option>
+                        <option id="week2Select" value="week2">Week 2</option>
+                        <option id="week3Select" value="week3">Week 3</option>
+                        <option id="week4Select" value="week4">Week 4</option>
+                        <option id="week5Select" value="week5"> Week 5</option>
+                        <option id="customTimeFrame" value="customTimeFrame">Custom:</option>
+                    </select>
+                    <input type="checkbox" id="dailyTotals">
+                        <label for="dailyTotals">Daily Totals:</label>
+                    <select id="proCounterContainer">
+                        <option id="proCounter" value="proCounter">Pro/Countertrend</option>
+                        <option id="proTrendOnly" value="proTrendonly">Pro-Trend Only</option>
+                        <option id="counterTrendOnly" value="countertrendOnly"> Countertrend Only</option>
+                    </select>
+                    <select id="singleMulti">
+                        <option id="multiContract">Multi Contract</option>
+                        <option id="singleContract">Single Contract</option>
+                    </select>
+                    <select>
+                        <option id="callPut" value="callPut">Call/Put</option>
+                        <option id="callOnly" value="callOnly">Call</option>
+                        <option id="putOnly" value="putOnly">Put</option>
+                    </select>
+                    <input type="checkbox" id="dayOfWeek">
+                        <label for="dayOfWeek">Day Of Week</label>
+                    <input type="checkbox" id="dte">
+                        <label for="dte">DTE:</label>
+                    <input type="checkbox" id="byRating">
+                        <label for="byrating">By Rating:</label>
+                    <input type="checkbox" id="confirmation">
+                        <label for="confirmation">Confirmation</label>
+                    <input type="checkbox" id="chased">
+                        <label for="chased">Chased</label>
+                    <input type="checkbox" id="cutShort">
+                        <label for="cutShort">Cut Short:</label>
+                    <div id="allStatsContainer">
+                        <input type="checkbox" id="allStats">
+                            <label for="allStats">All Stats:</label>
+                        <input type="checkbox" id="absolutelyAllStats">
+                            <label for="absolutelyAllStats">Absolutely All Stats:</label>
+                    </div>
+                    <button type="button">Apply Filters</button>
+                </form>
+            </div>
+            <div id="showTrades">
+            <template id="tradeTemplate">
+                        <div id="trade" class="trade">
+                            <div class="buttons">
+                                <div id="tradeId"></div>
+                                <div id="tradeDate"></div>
+                            <div class="tradeData">
+                                <div class = "pl"id="pl">P/L:</div>
+                                <div class = "time" id="time">Time:</div>
+                                <div class="length" id="length">Length:</div>
+                                <div class="explanation"><div class="explanationZoom"id="explanation"></div></div>
+                                <div class="contracts" id="contractNum"></div>
+                                <div class="dte" id="dte">dte: </div>
+                                <div class="rating"id="rating"></div>
+                                <div class="callput" id="callput"></div>
+                                <div class="countertrend" id="countertrend"></div>
+                                <div class="confirmation" id="confirmation"></div>
+                                <div class="chased" id="chased"></div>
+                                <div class="cut_short" id="cut_short"></div>
+                                <div class="savedPicContainer">
+                                </div>
+                        </div>
+                    </div>
+                    </template>
+            </div>
+            <div id="statZone">
+                <h2>Stats:</h2>
+                <table id="statsTable">
+                        <caption>
+                            Week 1 Trades (put week 1 dates here) (have caption show all of the details shown too (like timeframe, countertrend only))
+                        </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Week 1 Trades:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Num Trades: </th>
+                            <td id="numTrades">37</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Num Wins:</th>
+                            <td id="numWins">31</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Num Losses:</th>
+                            <td id="numLosses">6</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">P/L:</th>
+                            <td> -$12.00</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Win Ratio:</th>
+                            <td id="WW">83.74%</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Avg W:</th>
+                            <td id="avgW">4.64</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Avg L:</th>
+                            <td id="avgL">-25.44</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Avg:</th>
+                            <td id="totalAvg">1.64</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Projection</th>
+                            <td id="projection">-$126</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">W:L Ratio:</th>
+                            <td id="wR">4.35 : 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="prevMonthTable">
+                        <caption>
+                         last Month:
+                        </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Last Month:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Num Trades: </th>
+                            <td id="numTrades">37</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Num Wins:</th>
+                            <td id="numWins">31</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Num Losses:</th>
+                            <td id="numLosses">6</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">P/L:</th>
+                            <td id="pL"> -$12.00</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Win Ratio:</th>
+                            <td id="WW">83.74%</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Avg W:</th>
+                            <td id="avgW">4.64</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Avg L:</th>
+                            <td id="avgL">-25.44</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Avg:</th>
+                            <td id="totalAvg">1.64</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Projection</th>
+                            <td id="projection">-$126</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">W:L Ratio:</th>
+                            <td id="wR">4.35 : 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="thisYearTable">
+                        <caption>
+                            Current Year Trades:
+                        </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">This year:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Num Trades: </th>
+                            <td id="numTrades">37</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Num Wins:</th>
+                            <td id="numWins">31</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Num Losses:</th>
+                            <td id="numLosses">6</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">P/L:</th>
+                            <td> -$12.00</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Win Ratio:</th>
+                            <td id="WW">83.74%</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Avg W:</th>
+                            <td id="avgW">4.64</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Avg L:</th>
+                            <td id="avgL">-25.44</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Avg:</th>
+                            <td id="totalAvg">1.64</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Projection</th>
+                            <td id="projection">-$126</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">W:L Ratio:</th>
+                            <td id="wR">4.35 : 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="otherStats">
+                    <ul>
+                        <li>Avg Contracts: 3</li>
+                        <li>Avg Rating: D-</li>
+                        <li>% of trades with Confirmation: 33%</li>
+                        <li>% trades Chased: 46%</li>
+                        <li> % trades cut short:75%</li>
+                        <li> Avg Amt Won/Lost each Day: -2</li>
+                        <li> % 'perfect trades' (put info thing here): 10%</li>
+                        <!-- <li>Best Day of Week: Monday</li>
+                        <li>Worst day of Week: Friday</li> -->
+                    </ul>
+                </div>
+            </div>
+        </main>
+    <footer>
+        <h4> TODO: Stats Page Specific</h4>
+        <ul>
+            <li>put in top nav portion of the screen (next to the smiley face) the monthly p/l, WW%, and projection for the month (using past month's length)</li>
+            <li>Put charts in the past data section (it makes more sense there)</li>
+            <li>actually show the data (albiet in a limited way with no edit/delete buttons to make sure the trades gathered are the correct ones)</li>
+            <li>color charts based on if they are better than the past month chart or whatever, but get there later</li>
+            <li>create warning for trades that havenothingstat-wise just in case</li>
+            <li>
+                Also have it do data for each day of the week including showing the data for that (like as a normal table)
+            </li>
+            <li>Have it say a message on whether or not you met your goals or if there is a lot you have to work on</li>
+            <li>Make it so the add Everything button just grays out everything else (other than timeframe)</li>
+            <li>add in an option for outlier- such as sick, weird issue, and even period cycle (this is some day though)</li>
+            <li>Add a little information bubble for totalAvg, projection (make it take into account the avg amt of trades you make,so it would be how muych you'd make if that time frame was expanded to either 100 trades or a year either one) and win/loss ratio (but prob don't make w/loss ratio for ash)</li>
+            <li>for DTE allow user to input the ranges that they think are important for DTE, </li>
+            <li>Have settings so the stats page doesn't show stats you're not looking for</li>
+            <li>Make this data printable/saveable elewhere</li>
+            <li> have it populate w/the options that you actually use (ex: bazinga strat), not just hard-writing it in.</li>
+            <li> allow for custom date ranges eventually (w/in the same year)</li>
+            <li>avg trade length or time started etc.</li>
+            <li>Eventually create sliders for data with ranges</li>
+            <li>create modules for everything</li>
+        </ul>
+    </footer>
+</body>
+</html>

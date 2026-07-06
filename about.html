@@ -1,0 +1,177 @@
+<!doctype html>
+<head lang="en">
+<meta charset="UTF-8">
+<script src="tt2.js" defer></script>
+<title>Trade Tracker: Main Page</title>
+<link rel="icon" type="favicon.ico">
+<link rel="stylesheet" href="tt.css">
+<style>
+    .bulletDiv{
+        bordeR: 1px solid darkgray;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: rgb(61, 60, 60);
+    }
+    .noBullet li {
+       list-style-type: none;
+    }
+</style>
+</head>
+
+<body id="body">
+    <div id="div"></div>
+            <div id="screenDarkener" class="hidden" ></div>
+            <div id="closePic" class="hidden" >X</div>
+        <header>
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: About </a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+                <a href="tt2.html">Home</a>
+                <a href="statChart.html">Stats/Charts</a>
+                <a href="allTrades.html">All Trades</a>
+                <a href="pastData.html">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html">New File</a>
+                <a href="settings.html">Settings</a>
+                <a href="about.html" class="youAreHere">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+        </nav>
+        </header>
+        <div id="fakeHeader">
+        <div id="topHeader">
+            <a href="" id="logo">Trade Tracker: Home</a>
+            <div id="file">File:</div>
+            <div id="changeFileButton">File:</div>
+            <div id="date"></div>
+            <div id="happyFace"></div>
+            <div id="monthPL">P/L:</div>
+            <div id="monthWW">Win %:</div>
+        </div>
+        <nav>
+                <a href="tt2.html" class="youAreHere">Home</a>
+                <a href="statChart.html">Stats/Charts</a>
+                <a href="allTrades.html">All Trades</a>
+                <a href="pastData.html">Past Data</a>
+                <!-- <a href="">Export Data</a>
+                <a href="">Import Data</a>
+                <a href="">Combine Files</a> -->
+                <a href="newFile.html">New File</a>
+                <a href="settings.html">Settings</a>
+                <a href="about.html">About/Release Notes:</a>
+                <a href="">Tutorial</a>
+        </nav>
+    </div>
+        <div id="empty"></div>
+        <div id="emptyStandard"></div>
+        <main id = "main">
+            <h1>About:</h1>
+            <p>
+                This is Trade Tracker. You can input trade details, pics, etc. and will be able to automatically
+                find the stats on your data without a subscription/doing things by hand, with more options to get 
+                data based off of custom strategies/groupings which to my knowledge doesn't really exist. Keep track of
+                your gambling addiction today!
+            </p>
+            <p>This project uses python, js, css, html, sqlite, and pywebview to tie it all together.</p>
+            <h2>Features:</h2>
+            <div class="bulletDiv">
+            <p>Overall</p>
+            <ul>
+                <li>shows the connected file (that automatically open when
+                    you open the program)
+                </li>
+                <li>a little emoji that shows you're progress at a glance</li>
+                <li>the total profit/loss of the whole file at a glance</li>
+                <li>the win percentage of your total trades</li>
+                <li>custom visibility settings where you can choose what you do/don't want to see</li>
+                <li>Can zoom in on photos and edit/delete trades easily right where they are </li>
+                <li>responsive light/dark mode based off of your computer</li>
+            </ul>
+        </div>
+        <div class="bulletDiv">
+            <p>Home page:</p>
+            <ul>
+                <li>An easy way to input trades (including automatic dates and pics if you wish)</li>
+                <li>A note section at the bottom where you can quickly input extra notes before you input it as a trade 
+                    (just not pictures right now that won't work out too well)</li>
+                <li>custom notifications in the top, with choice of color</li>
+                <li>The option to show trades either for the day or for the week</li>
+                <li>Trades are colored based off of the day of the week for easy seeing</li>
+            </ul>
+        </div>
+        <div class="bulletDiv">
+            <p>Stat Page:</p>
+            <ul>
+                <li>Can quickly get stats based off of specific timeframes, variables, and even compare custom
+                    strategies in comparison to the rest of the trades
+                </li>
+            </ul>
+            <p>All Trades:</p>
+            <ul>
+                <li>Can see/edit/delete all trades in the file, can also see if details are missing for some</li>
+            </ul>
+        </div>
+        <div class="bulletDiv">
+            <p>Settings:</p>
+            <ul>
+                <li>Can set favorite settings, notifications, and can hide/show certain variables</li>
+            </ul>
+            <p>New File:</p>
+            <ul>
+                <li>Can review settings before making a new file </li>
+            </ul>
+        </div>
+        <div>
+            <h2>Version: 1.0.0 (6/9/26)</h2>
+            <ul class="noBullet">
+                <li> Version (1.0.0) 6/9/26- This is the first release of Trade Tracker. Only the bare minimum works here (
+                    can input trades, can see all trades, can get very basic stats, and can create a new file,
+                    that's about it). The all trades page may also be very slow but at least it works.
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2>Progress:</h2>
+            <div>
+            <p>Total hours spent on this project: (not counting the time it took to learn how to get pywebview to work and get a python/db connection to work as well, which took like 3 months since Janguary)Solely constructing this project</p>
+            <ul>
+                <li>1.0.0: Start 3.24.26 End 6.9.26, 39 days of actual working(being sick for at least 3 of them)
+                    (out of 52 possible weekdays for it, not counting the fridays that I don't ahve itme for, it would be
+                    doing it for 39 out of 42 days), 
+                    93.5 hours of work, 12 work days (only counting 100% focused work which still wouldn't happen like
+                     that), avg 2.45 hours of focused work a day, which is given that I have had to do things 
+                    throughout the week too. If priced at $15 an hour this would only be $1402.5 worth of work</li>
+                <li></li>
+            </ul>
+            </div>
+            <p>Total time spent on this project: 93.5 hrs</p>
+        </div>
+        </main>
+        <footer>
+            TODO:
+            <ul>
+                <li>Give an option to set favorite file in settings too</li>
+                <li>fix light/dark mode colorations now that things are mostly fine</li>
+                <li>optimize the all trades file section or add a bar or something</li>
+                <li>add notification settings to where they can be X bars across the top</li>
+                <li>change setting file to differentiate btwn editable and hideable and such</li>
+                <li>make picBoxes have an x that you can delete easily and a hover to see or something</li>
+                <li>make custom ministat emoji choice ranges</li>
+                <li>history of past trades</li>
+                <li>clear up what happens when you start with no file ahead of time</li>
+                <li>organize it in a zip file so the user can just open it, move it, and they're fine</li>
+                <li>make sure the naming conventions match each code type</li>
+                <li>allow the option to actually reverse to presets</li>
+            </ul>
+        </footer>
+</body>
+</html>
