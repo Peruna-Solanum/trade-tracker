@@ -1,10 +1,6 @@
 import PyInstaller.__main__
 
-# PyInstaller.__main__.run([#works just fine here so that's great
-#     'tt2.py',
-#     '--add-data',
-#     "tt2.html;.",
-# ])
+#REMEMBER TO TURN OFF THE DEBUG BUT ALLOW REFRESHING SETTING IN MAINTT.PY
 PyInstaller.__main__.run([
     'tt2.py',
 

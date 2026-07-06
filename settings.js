@@ -228,6 +228,19 @@ function editSetting(id) {
     cancelButton.classList.add('editButton');
     cancelButton.classList.remove('hidden');
     liName.style.backgroundColor = "gray";
+    cancelButton.addEventListener('click', ()=> {
+        cancelButton.classList.add('hidden');
+        clickedButton.textContent = "edit";
+        liName.style.backgroundColor = "none";
+        if (originalVal === 'N') {
+            editXY.classList.remove('checkmark')
+            editXY.classList.add('XMark');
+        } else {
+            editXY.classList.remove('XMark');
+            editXY.classList.add('checkmark');
+        }
+        editXY.classList.remove('editable');
+    })
     editXY.addEventListener('click', ()=> {
         if (editXY.classList.contains('checkmark')) {
             editXY.classList.remove('checkmark')
@@ -240,9 +253,6 @@ function editSetting(id) {
         }
     })
     clickedButton.addEventListener('click', ()=> {saveEdit(editXY.value, liText.value, originalVal, finalVal)})
-}
-function cancelEdit() {
-    reloadPage()
 }
 function saveEdit(settingType,name,  prevValue, changeValue) {
     pywebview.api.changeSetting(settingType, name, prevValue, changeValue).then(reloadPage)
@@ -279,7 +289,6 @@ function populateList(listContainer, listName, onOff, typeName) {
     }
 }
 const container = document.getElementById('customList')
-console.log(container.value)
 function populateCustomList(listContainer, listName, listHidden, listQuickShow, listColor){
     let template = document.getElementById('customTemplate');
 
@@ -389,7 +398,6 @@ function deleteCustom(id) {
 }
 const newCustomButton = document.getElementById('submitCustom')
 function newCustom() {
-    console.log('NEW CUSTOM IS BEING SAVED')
     const newName = document.getElementById('newName')
     const newHidden = document.getElementById('newHidden')
     const newQuickShow = document.getElementById('newQuickShow');
@@ -399,21 +407,27 @@ function ifChecked(checkbox){
         return 'Y'
         } else { return 'N'}
 }
-ifChecked(newHidden);
-ifChecked(newQuickShow)
-pywebview.api.newCustom(newName.value, ifChecked(newHidden), ifChecked(newQuickShow), newColor.value ).then(reloadPage)
+// ifChecked(newHidden);
+// ifChecked(newQuickShow)
+    pywebview.api.newCustom(newName.value, ifChecked(newHidden), ifChecked(newQuickShow), newColor.value ).then(reloadPage)
 }
-newCustomButton.addEventListener('click', ()=> newCustom())
+newCustomButton.addEventListener('click',()=> { newCustom})//for the allTrades file, not the settingsFile
 /////////////////////save and create new file
 const createNewFile = document.getElementById('createNewFile');
 const newFileName = document.getElementById('newFileName');
 const fileLocationButton = document.getElementById('fileLocationButton');
 let ready = [0,0];
-function saveFolderLocation() {
-    pywebview.api.saveFolderLocation().then(folderBackground)
+function saveFolderLocation(fileType, id) {
+    console.log(fileType)
+    console.log(id)
+    pywebview.api.saveFolderLocation(fileType, id).then(folderBackground)
+}
+function openFileExplorer(fileType, id) {
+    pywebview.api.openFileExplorer(fileType, id).then(folderBackground)
 }
 function folderBackground(folderPath){
-    fileLocationButton.textContent = folderPath;
+    let button = document.getElementById(folderPath[1])
+    button.textContent = folderPath[0];
     ready[1] = 1;
     isItReady();
 }
@@ -431,9 +445,11 @@ createNewFile.addEventListener('click',()=> {
         console.log('SAVING FILE NOW')
         let fileName = newFileName.value;
         let fileLocation = fileLocationButton.textContent;
+        let referenceFile = document.getElementById('copyPastData')
         console.log(fileName)
         console.log(fileLocation)
-        pywebview.api.createNewFile(fileName, fileLocation).then(newFileDialog(`${fileName}.db`, fileLocation))
+        pywebview.api.createNewFile(fileName, fileLocation, referenceFile.textContent).then(newFileDialog(`${fileName}.db`, fileLocation))
+        //pywebview.api.createPastStats(referenceFile.textContent)
     }
 }
 )
@@ -450,3 +466,13 @@ function isItReady() {
 function newFileDialog(name, folder) {
     alert(`New file ${name} made at ${folder}. Refresh page to see new file.`)
 }
+const includePastData = document.getElementById('includePastData')
+includePastData.addEventListener('click', ()=> {
+        const pastDataButton = document.getElementById('copyPastData')
+    if (includePastData.checked === true) {
+    console.log('it was checked')
+    pastDataButton.classList.remove('notReady')
+    } else if (includePastData.checked === false) {
+         pastDataButton.classList.add('notReady')
+    } else {}
+})

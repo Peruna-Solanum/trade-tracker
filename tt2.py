@@ -3,20 +3,16 @@ import sqlite3
 import time
 import shutil
 import os
+import datetime as dt #gives it a different name (could be anything)
 
-#create connection
-#create cursor
-#create query
-#execute query
-#commit query
-#close cursor
-#close connection
 class Api:
-    def saveFolderLocation(self):
-        #FileDialog.FOLDER
-        #result = window.create_file_dialog(dialog_type=webview.FOLDER_DIALOG)#depreciated
-        result = window.create_file_dialog(dialog_type=webview.FileDialog.FOLDER)
-        return result
+    def saveFolderLocation(self, fileType, activeButton):
+        if (fileType == 'folder'):
+            result = window.create_file_dialog(dialog_type=webview.FileDialog.FOLDER)
+        elif (fileType == 'file'):
+            file_types = ('Database Files (*.db)', 'All files (*.*)')
+            result =   window.create_file_dialog(webview.FileDialog.OPEN, allow_multiple=False, file_types = file_types)
+        return (result, activeButton)
     def newCustom(self, name, hidden, quickShow, color):
         try:
             print('ADDING NEW CUSTOM TO DB')
@@ -210,7 +206,19 @@ class Api:
                     print('0 trades found')
                     data_ww = 0
                 pl_added = sum(pl_data)
-                return [pl_added, data_ww ]
+                sqliteConnection.close()
+
+                customLengthConnection = sqlite3.connect(tableName)
+                customCursor = customLengthConnection.cursor()
+                #customCursor.execute('SELECT * FROM TRADES')
+                customCursor.execute('SELECT sql FROM sqlite_master WHERE name = "Trades"')
+                customResult = customCursor.fetchone()
+                customLength = customResult[0][272:-35]
+                customArray = customLength.split(',')
+                currentCustomList = []
+                for x in customArray:
+                    currentCustomList.append(x[:-8])
+                return [pl_added, data_ww, currentCustomList]
             except sqlite3.Error as error:
                 print('Error occurred- ', error)
             finally:
@@ -233,7 +241,7 @@ class Api:
                 mini_stat_result = self.miniStats(result[1][1])
                 color_result = self.customColor()
                 #result order: fileName, pl-Added, WW:, editable, hideable, hidden, quickShow, color, I'd labale them but it wouldn't let me so oh well
-                export_settings = [result[1][1], mini_stat_result[0], mini_stat_result[1], user_setting_result[0], user_setting_result[1], user_setting_result[2], user_setting_result[3], color_result]
+                export_settings = [result[1][1], mini_stat_result[0], mini_stat_result[1], user_setting_result[0], user_setting_result[1], user_setting_result[2], user_setting_result[3], color_result, mini_stat_result[2]]
                 return export_settings
         except sqlite3.Error as error:
              print('Error occurred- ', error)
@@ -403,63 +411,275 @@ class Api:
                     sqliteConnection.close()  
                 else:
                     print('db wasn\'t opened')
-    def loadStats(self, file, singleMulti, timeFrame, collation, options):
-            if (os.path.isfile(file)):
+    def loadStats(self, file, singleMulti, timeFrame, collation, options, timeName):
+        if (os.path.isfile(file)):
+# Time Frame:  ['2026-06-01', '2026-06-31']
+# Collation:  singleContract
+# options:  rating
+            if (singleMulti == 'grouped'):
                 try:
-                    sqliteConnection= sqlite3.connect(file)
+                    print('Calculating Stats from DB')
+                    sqliteConnection = sqlite3.connect(file)
                     cursor = sqliteConnection.cursor()
-                    collationPhrase = ''
-                    if (collation == "singleContract"):
-                        collationPhrase = ', contracts'
-                    else:
-                        collationPhrase = ', date'
-                    #                     <option id="extras" value="">--Extras:--</option>
-                    # <option id="dte" value="dte">Dte:</option>
-                    # <option id="rating" value="rating">By Rating:</option>
-                    # <option id="callPut" value="callPut">Call/Put:</option>
-                    optionPhrase = (', ' +  options)
-                    print(collationPhrase)
-                    print(optionPhrase)
-                    sqlPhrase = ''
-                    returnedData = []
-                    if (singleMulti == "single"):
-                        # sqlPhrase = str("SELECT pl", collationPhrase, optionPhrase, 'FROM Trades')
-                        sqlPhrase = "SELECT pl FROM TRADES"
+                    print(timeFrame)
+                    allTrades = []
+                    week1 = []
+                    week2 = []
+                    week3 = []
+                    week4 = []
+                    week5 = []
+                    ratingList = []
+                    questionList = [week1, week2, week3, week4, week5]
+                    finalNames = ['rating', 'allTrades', 'week1', 'week2', 'week3', 'week4', 'week5']
+                    finalData = [ratingList, allTrades,week1, week2, week3, week4, week5]
+                    def overallStats():
+                        cursor.execute('SELECT pl, rating FROM Trades')
+                        allresult = cursor.fetchall()
+                        for x in allresult:
+                            allTrades.append(x[0])
+                            if (x[1] == 'A'):
+                                ratingList.append(1)
+                            elif (x[1] == 'B'):
+                                ratingList.append(2)
+                            elif (x[1] == 'C'):
+                                ratingList.append(3)
+                            elif (x[1] == 'D'):
+                                ratingList.append(4)
+                            elif (x[1] == 'F'):
+                                ratingList.append(5)
+                    overallStats()
+                    i = 0
+                    while i < len(timeFrame):
+                        sqlPhrase =  str('SELECT pl FROM Trades WHERE date BETWEEN  \'' + timeFrame[i][0] + '\' AND \'' + timeFrame[i][1] + '\'')
                         cursor.execute(sqlPhrase)
                         result = cursor.fetchall()
+                        currentList = questionList[i]
                         for x in result:
-                            outOfArray = x[0]
-                            returnedData.append(x[0])
-
-                        print(result)
-                    elif (singleMulti == "multi"):
-                        sqlPhrase = str('SELECT pl', collationPhrase, optionPhrase, 'FROM TRADES WHERE date BETWEEN ? AND ?')
-                        cursor.execute(sqlPhrase, timeFrame)
-                        print(result)
-                        result = cursor.fetchall()
-                    elif (singleMulti == "group"):#weekly being done
-                        sqlPhrase = 'SELECT pl', collationPhrase, optionPhrase, 'FROM TRADES WHERE date BETWEEN ? AND ?'
-                        responseData = []
-                        for x in timeFrame:
-                            cursor.execute(sqlPhrase, timeFrame[x])
-                            result = cursor.fetchall()
-                            responseData.push(result)
-                    else:
-                        print('error:time frame setup on the loadStats function is not wokring')
-                    #cursor.execute("SELECT * FROM Trades WHERE date BETWEEN '2026-04-22' AND '2026-04-23' ")
-                    #cursor.execute("SELECT * FROM Trades WHERE date BETWEEN ? and ?", [dateRange[0], dateRange[3]])
-                    #cursor.execute("SELECT * FROM Trades WHERE date BETWEEN ? AND ? ORDER BY date", [dateRange[0], dateRange[3]])
-                    #result = cursor.fetchall()
-                    
-                    return returnedData
+                         currentList.append(x[0])
+                        i+= 1
+                    if (week1 == []):
+                        finalNames.remove('week1')
+                        finalData.remove(week1)
+                    if (week2 == []):
+                        finalNames.remove('week2')
+                        finalData.remove(week2)
+                    if (week3 == []):
+                        finalNames.remove('week3')
+                        finalData.remove(week3)
+                    if (week4 == []):
+                        finalNames.remove('week4')
+                        finalData.remove(week4)
+                    if (week5 == []):
+                        print('WEEK 5 HAS DATA')
+                        finalNames.remove('week5')
+                        finalData.remove(week5)
+                    print([finalNames, finalData])
+                    return [finalNames, finalData]
                 except sqlite3.Error as error:
                     print('Error occurred- ', error)
                 finally:
                     if sqliteConnection:
-                       # print('loaded weekly trades. ending connection')
                         sqliteConnection.close()
-    def createNewFile(self, fileName, fileLocation):
-#         <!-- CREATE TABLE "Trades" (
+            elif (collation == 'dailyTotal'):
+                try:
+                    sqliteConnection = sqlite3.connect(file)
+                    cursor = sqliteConnection.cursor()
+                    sqlStart = str('SELECT pl, rating, date' )
+                    if (singleMulti == 'single'):
+                        sqlEnd = str('  FROM Trades')
+                        sqlPhrase = str(sqlStart + sqlEnd)
+                        cursor.execute(sqlPhrase)
+                    else:
+                        sqlEnd = str(' FROM Trades WHERE date BETWEEN \'' + timeFrame[0] + '\' AND \'' + timeFrame[1] + '\'')
+                        sqlPhrase = str(sqlStart + sqlEnd)
+                        cursor.execute(sqlPhrase)
+                    result = cursor.fetchall()
+                    ratingList = []
+                    plList = []
+                    dateList = []
+                    dateIndex = []
+                    addedPlList = []
+                    for x in result:
+                        if (x[1] == 'A'):
+                            ratingList.append(1)
+                        elif (x[1] == 'B'):
+                            ratingList.append(2)
+                        elif (x[1] == 'C'):
+                            ratingList.append(3)
+                        elif (x[1] == 'D'):
+                            ratingList.append(4)
+                        elif (x[1] == 'F'):
+                            ratingList.append(5)
+                        plList.append(x[0])
+                        dateList.append(x[2])
+                    print('DATE LIST : ' , dateList)
+                    print('PL LIST: ', plList)
+                    i = 1
+                    while i < len(dateList):
+                        if (dateList[i] == dateList[i - 1]):
+                            finalVal = plList[i] + plList[i - 1]
+                            plList[i - 1] = ''
+                            plList[i] = finalVal
+                            i += 1
+                        else:
+                            i += 1
+                    p = 0
+                    while p < len(plList):
+                        if (plList[p] != ''):
+                            addedPlList.append(plList[p])
+                            p += 1
+                        else:
+                            p += 1
+                    return [['rating', 'dailyTotal'], [ratingList, addedPlList]]
+                except sqlite3.Error as error:
+                    print('Error occurred- ', error)
+                finally:
+                    if sqliteConnection:
+                        sqliteConnection.close()
+            else:
+                try:
+                    print('Calculating Stats from DB')
+                    sqliteConnection = sqlite3.connect(file)
+                    cursor = sqliteConnection.cursor()
+                    optionCode = options
+                    sqlStart = str('SELECT pl, rating, ' + options )
+                    if (options == ''):
+                        sqlStart = str('SELECT pl, rating')
+                    elif (options == 'callPut'):
+                        sqlStart = str('SELECT pl, rating, callput ')
+                    if (collation == 'singleContract'):
+                        sqlStart = sqlStart + ', contracts'
+                    if (singleMulti == 'single'):
+                        
+                        sqlEnd = str(' , contracts FROM Trades')
+                        sqlPhrase = str(sqlStart + sqlEnd)
+                        print(sqlPhrase)
+                        cursor.execute(sqlPhrase)
+                    elif (singleMulti == 'multi'):
+                        sqlEnd = str(' , contracts FROM Trades WHERE date BETWEEN \'' + timeFrame[0] + '\' AND \'' + timeFrame[1] + '\'')
+                        sqlPhrase = str(sqlStart + sqlEnd)
+                        print(sqlPhrase)
+                        cursor.execute(sqlPhrase)
+                    elif (singleMulti == 'grouped'):
+                        print('GROUPED')
+                    result = cursor.fetchall()
+                    contractList = []
+                    ratingList = []
+                    yesCustomList = []
+                    noCustomList = []
+                    plList = []
+                    callList = []
+                    putList = []
+                    finalNames = ['rating', timeName]
+                    finalData = [ratingList, plList]
+                    print(result)
+                    for x in result:
+                        plList.append(x[0])
+                        if (options == 'callPut'):
+                            if (x[2] == 'call'):
+                                callList.append(x[0])
+                            elif (x[2] == 'put'):
+                                putList.append(x[0])
+                        if (collation == 'singleContract'):
+                             contractList.append(x[0] / x[3])
+                        if (x[1] == 'A'):
+                                ratingList.append(1)
+                        elif (x[1] == 'B'):
+                                ratingList.append(2)
+                        elif (x[1] == 'C'):
+                                ratingList.append(3)
+                        elif (x[1] == 'D'):
+                                ratingList.append(4)
+                        elif (x[1] == 'F'):
+                                ratingList.append(5)
+                        if (options != ''):
+                            if (x[2] == 'on'):
+                                yesCustomList.append(x[0])
+                            elif (x[2] == 'off'):
+                                noCustomList.append(x[0])
+                    if (collation == 'singleContract'):
+                        finalData.append(contractList)
+                        finalNames.append(collation)
+                    if (options != ''):
+                        if (options == 'callPut'):
+                            finalNames.append('call')
+                            finalNames.append('put')
+                            finalData.append(callList)
+                            finalData.append(putList)
+                        else:
+                            finalData.append(yesCustomList)
+                            finalNames.append(options)
+                    return [finalNames, finalData]
+
+               
+                except sqlite3.Error as error:
+                    print('Error occurred- ', error)
+                finally:
+                    if sqliteConnection:
+                        sqliteConnection.close()
+                
+#     def createNewFile(self, fileName, fileLocation):
+# #         <!-- CREATE TABLE "Trades" (
+# # 	"id"	INTEGER NOT NULL UNIQUE COLLATE BINARY,
+# # 	"pl"	NUMERIC NOT NULL COLLATE BINARY,
+# # 	"date"	TEXT COLLATE BINARY,
+# # 	"trade_start"	TEXT COLLATE BINARY,
+# # 	"trade_length"	INTEGER COLLATE BINARY,
+# # 	"explanation"	TEXT COLLATE BINARY,
+# # 	"contracts"	INTEGER NOT NULL COLLATE BINARY,
+# # 	"dte"	INTEGER COLLATE BINARY,
+# # 	"rating"	TEXT COLLATE BINARY,
+# # 	"callput"	INTEGER COLLATE BINARY,
+# # 	"countertrend"	INTEGER COLLATE BINARY,
+# # 	"confirmation"	INTEGER COLLATE BINARY,
+# # 	"chased"	INTEGER COLLATE BINARY,
+# # 	"cut_short"	INTEGER COLLATE BINARY,
+# # 	"pic1"	BLOB COLLATE BINARY,
+# # 	"pic2"	BLOB COLLATE BINARY,
+# # 	"pic3"	BLOB COLLATE BINARY,
+# # 	"pic4"	BLOB COLLATE BINARY,
+# # 	PRIMARY KEY("id" AUTOINCREMENT)
+# # ); -->
+
+#         newFile = open(str(fileName + '.db'), 'x')#makes the file just fine, in same dir though
+#         newFileLocation = str(os.path.abspath(str(fileName + '.db')))
+#         newFile.close()#apparrently when a new file is made, it is opened so you cannot move it (as I see now with the whole open() thing. it wasn't letting me do it due to shutil saying that it can't do stuff with another process running, that was the process
+#         shutil.move(newFileLocation, fileLocation)
+#         # create and move new file
+#         #load prev data
+#         #add data to table
+#         try:
+#             sqliteConnection = sqlite3.connect('settings.db')
+#             cursor = sqliteConnection.cursor()
+#             cursor.execute('SELECT data_name, SQL_datatype FROM User_DB_Structure')
+#             result = cursor.fetchall()
+#             dataPhrase = ''
+#             sqliteConnection.close()
+#             for x in result:
+#                 dataPhrase = dataPhrase + str('"'+ x[0]+ '" '+ x[1] + ',')
+#             print(dataPhrase)
+#             sqlPhrase = (str('CREATE TABLE "Trades" ( "id" INTEGER NOT NULL UNIQUE, ' + dataPhrase + ' PRIMARY KEY ("id" AUTOINCREMENT));'))
+#             try:
+#                 newConnection = sqlite3.connect(str(fileLocation + '\\' + fileName + '.db'))
+#                 newcursor = newConnection.cursor()
+#                 newcursor.execute(sqlPhrase)
+#                 newcursor.execute('CREATE TABLE "prevDayOfWeeks" ("date" TEXT NOT NULL"Month"	NUMERIC NOT NULL,"dayOfWeek"	NUMERIC NOT NULL,"pl" NUMERIC NOT NULL)')
+#                 newConnection.commit()
+#             except sqlite3.Error as error:
+#                 print('Error occurred- ', error)
+#             finally:
+#                 if newConnection:
+#                     newConnection.close()
+#             self.createPastStats(self, referencefile, oldfile)
+#             #print(str(fileLocation + '\\' + fileName + '.db'))
+#             self.saveFavoriteFile(str(fileLocation + '\\' + fileName + '.db'))
+#         except sqlite3.Error as error:
+#             print('Error occurred- ', error)
+#         finally:
+#             if sqliteConnection:
+#                 sqliteConnection.close()
+    def createNewFile(self, fileName, fileLocation, referenceFile):
+#<!-- CREATE TABLE "Trades" (
 # 	"id"	INTEGER NOT NULL UNIQUE COLLATE BINARY,
 # 	"pl"	NUMERIC NOT NULL COLLATE BINARY,
 # 	"date"	TEXT COLLATE BINARY,
@@ -480,47 +700,262 @@ class Api:
 # 	"pic4"	BLOB COLLATE BINARY,
 # 	PRIMARY KEY("id" AUTOINCREMENT)
 # ); -->
-
+        newFileName = str(fileName + '.db')
         newFile = open(str(fileName + '.db'), 'x')#makes the file just fine, in same dir though
         newFileLocation = str(os.path.abspath(str(fileName + '.db')))
         newFile.close()#apparrently when a new file is made, it is opened so you cannot move it (as I see now with the whole open() thing. it wasn't letting me do it due to shutil saying that it can't do stuff with another process running, that was the process
-        shutil.move(newFileLocation, fileLocation)
+        shutil.move(newFileLocation, fileLocation)#this isn't working for some reason
         # create and move new file
         #load prev data
         #add data to table
-        try:
+        try:#get settings instructions for how to make file
             sqliteConnection = sqlite3.connect('settings.db')
             cursor = sqliteConnection.cursor()
             cursor.execute('SELECT data_name, SQL_datatype FROM User_DB_Structure')
-            result = cursor.fetchall()
+            sqlResult = cursor.fetchall()
             dataPhrase = ''
             sqliteConnection.close()
-            for x in result:
+            for x in sqlResult:
                 dataPhrase = dataPhrase + str('"'+ x[0]+ '" '+ x[1] + ',')
             print(dataPhrase)
             sqlPhrase = (str('CREATE TABLE "Trades" ( "id" INTEGER NOT NULL UNIQUE, ' + dataPhrase + ' PRIMARY KEY ("id" AUTOINCREMENT));'))
-            try:
+            try:#create the new file using those instructions
                 newConnection = sqlite3.connect(str(fileLocation + '\\' + fileName + '.db'))
                 newcursor = newConnection.cursor()
+                #standard new data
                 newcursor.execute(sqlPhrase)
+                #prev data table
+                newcursor.execute('CREATE TABLE "prevData" ("Month"	TEXT NOT NULL,"numTrades"	INTEGER NOT NULL,"numWins"	INTEGER NOT NULL,"numLosses"	INTEGER NOT NULL,"ww"	NUMERIC NOT NULL,"multiPl"	NUMERIC NOT NULL,"multiWAmt"	NUMERIC NOT NULL,"multiLAmt"	NUMERIC NOT NULL,"multiWAvg"	NUMERIC NOT NULL,"multiLAvg"	NUMERIC NOT NULL,"multiTotalAvg"	NUMERIC NOT NULL,"multiProjection"	NUMERIC NOT NULL,"multiWLR"	NUMERIC NOT NULL,"singlePl"	NUMERIC NOT NULL,"singleWAmt"	NUMERIC NOT NULL,"singleLAmt"	NUMERIC NOT NULL,"singleWAvg"	NUMERIC NOT NULL,"singleLAvg"	NUMERIC NOT NULL,"singleTotalAvg"	NUMERIC NOT NULL,"singleProjection"	NUMERIC NOT NULL,"singleWLR"	NUMERIC NOT NULL,PRIMARY KEY("Month"));')
+                #prev day of week table
+                newConnection.commit()
+                newcursor.execute('CREATE TABLE "prevDayOfWeeks" ("date" TEXT NOT NULL, "Month"	NUMERIC NOT NULL,"dayOfWeek"	NUMERIC NOT NULL,"pl" NUMERIC NOT NULL)')
                 newConnection.commit()
             except sqlite3.Error as error:
-                print('Error occurred- ', error)
+                print('Error occurred- Create New File: ', error)
             finally:
                 if newConnection:
                     newConnection.close()
-            print(str(fileLocation + '\\' + fileName + '.db'))
-            self.saveFavoriteFile(str(fileLocation + '\\' + fileName + '.db'))
         except sqlite3.Error as error:
             print('Error occurred- ', error)
         finally:
             if sqliteConnection:
                 sqliteConnection.close()
+                self.createPastStats( referenceFile, str(fileLocation + '/' + fileName + '.db'))
+                #print(str(fileLocation + '\\' + fileName + '.db'))
+                self.saveFavoriteFile(str(fileLocation + '/' + fileName + '.db'))
+    def createPastStats(self, referenceFile, fileLocation):
+        try:#get month data from referenceFile so the other functions can put it in the new file
+            sqliteConnection = sqlite3.connect(referenceFile)
+            cursor = sqliteConnection.cursor()
+            cursor.execute('SELECT pl, contracts, date FROM Trades' )
+            sqlResult = cursor.fetchall()
+            sqliteConnection.close()
+            self.appendOldMonths(referenceFile, fileLocation)
+            self.appendOldWeeks(referenceFile, fileLocation)
+            self.monthlyStats(sqlResult, referenceFile, fileLocation)
+            self.dayOfWeek(sqlResult, fileLocation)
+        except sqlite3.Error as error:
+             print('Error occurred- Create Past Stats ', error)
+        finally:
+            if sqliteConnection:
+                sqliteConnection.close()
+    def monthlyStats(self, result, referenceFile, fileLocation):
+        ##Trades, #W's, #L's, pl, ww, w amt, lamt, avgw, avgl, totalAvg, projection, wlRatio
+        multipl = []
+        singlepl = []
+        winMulti = []
+        lossMulti = []
+        winSingle = []
+        lossSingle = []
+        for x in result:
+            multipl.append(x[0])
+            singlePlIndex = int(x[0]) / int(x[1])
+            singlepl.append(singlePlIndex)
+            if (x[0] > 0):
+                winMulti.append(x[0])
+                winSingle.append(singlePlIndex)
+            else:
+                lossMulti.append(x[0])
+                lossSingle.append(singlePlIndex)
+        numTrades = len(multipl)
+        numWins = len(winMulti)
+        numLosses = len(lossMulti)
+        multiPlVal = sum(multipl)
+        singlePlVal = sum(singlepl)
+        ww = (numWins / numTrades) * 100
+        multiWAmt = sum(winMulti)
+        multiLAmt = sum(lossMulti)
+        singleWAmt = sum(winSingle)
+        singleLAmt = sum(lossSingle)
+        multiWAvg = multiWAmt / numWins
+        multiLAvg = multiLAmt / numLosses
+        singleWAvg = singleWAmt / numWins
+        singleLAvg = singleLAmt / numLosses
+        multiTotalAvg = sum(multipl) / len(multipl)
+        singleTotalAvg = sum(singlepl) / len(singlepl)
+        multiProjection = (multiWAvg * ww) + (multiLAvg * (100 - ww))
+        singleProjection = (singleWAvg * ww) + (singleLAvg * (100 - ww))
+        multiWLDivided = round((multiLAvg / multiWAvg), 2)
+        singleWLDivided = round((singleLAvg / singleWAvg), 2)
+        multiWLR = str('1:' + str(multiWLDivided))
+        singleWLR = str('1:' + str(singleWLDivided))
+        
+        monthName = referenceFile.split('\\')
+        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB', monthName)
 
-#########################################
+        totalStatsReturn = [[numTrades, numWins, numLosses, ww], 
+        [multiPlVal, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR ],
+        [singlePlVal, singleWAmt, singleLAmt, singleWAvg, singleLAvg, singleTotalAvg, singleProjection, singleWLR]]
+        try:#get month data from referenceFile so the other functions can put it in the new file
+            sqliteConnection = sqlite3.connect(fileLocation)
+            cursor = sqliteConnection.cursor()
+            cursor.execute('INSERT INTO prevData(Month, numTrades, numWins, numLosses, ww, multiPl, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR, singlePl, singleWAmt, singleLAmt, singleWAvg, singleLAvg, singleTotalAvg, singleProjection, singleWLR) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+            monthName[-1][:-3], numTrades, numWins, numLosses, ww, multiPlVal, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR,
+            singlePlVal, singleWAmt, singleLAmt, singleWAmt, singleLAvg, singleTotalAvg, singleProjection, singleWLR])
+            sqliteConnection.commit()
+        except sqlite3.Error as error:
+             print('Error occurred- MonthlyStats() ', error)
+        finally:
+            if sqliteConnection:
+                sqliteConnection.close()
+#     CREATE TABLE "prevData" (
+# 	"Month"	TEXT NOT NULL,
+# 	"numTrades"	INTEGER NOT NULL,
+# 	"numWins"	INTEGER NOT NULL,
+# 	"numLosses"	INTEGER NOT NULL,
+# 	"ww"	NUMERIC NOT NULL,
+# 	"multiPl"	NUMERIC NOT NULL,
+# 	"multiWAmt"	NUMERIC NOT NULL,
+# 	"multiLAmt"	NUMERIC NOT NULL,
+# 	"multiWAvg"	NUMERIC NOT NULL,
+# 	"multiLAvg"	NUMERIC NOT NULL,
+# 	"multiTotalAvg"	NUMERIC NOT NULL,
+# 	"multiProjection"	NUMERIC NOT NULL,
+# 	"multiWLR"	NUMERIC NOT NULL,
+# 	"singlePl"	NUMERIC NOT NULL,
+# 	"singleWAmt"	NUMERIC NOT NULL,
+# 	"singleLAmt"	NUMERIC NOT NULL,
+# 	"singleWAvg"	NUMERIC NOT NULL,
+# 	"singleLAvg"	NUMERIC NOT NULL,
+# 	"singleTotalAvg"	NUMERIC NOT NULL,
+# 	"singleProjection"	NUMERIC NOT NULL,
+# 	"singleWLR"	NUMERIC NOT NULL,
+# 	PRIMARY KEY("Month")
+# );
+# CREATE TABLE "prevDayOfWeeks" (
+#     "date" TEXT NOT NULL
+# 	"Month"	NUMERIC NOT NULL,
+# 	"dayOfWeek"	NUMERIC NOT NULL,
+# 	"pl"	NUMERIC NOT NULL
+# )
+    def appendOldMonths(self, oldFile, newFile):
+        try:
+            sqliteConnection = sqlite3.connect(oldFile)
+            cursor = sqliteConnection.cursor()
+            cursor.execute('SELECT * FROM prevData')
+            result = cursor.fetchall()
+            sqlVals = []
+            for x in result:
+                sqlVals.append(x)
+            sqliteConnection.close()
+            if len(sqlVals)!= 0:
+                try:
+                    newDbConnection = sqlite3.connect(newFile)
+                    cursor = newDbConnection.cursor()
+                    print('AAAAAAAAAAAA', len(sqlVals))
+                    cursor.execute('INSERT INTO prevData(Month, numTrades, numWins, numLosses, ww, multiPl, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR, singlePl, singleWAmt, singleLAmt, singleWAvg, singleLAvg, singleTotalAvg, singleProjection, singleWLR) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+                        sqlVals[0], sqlVals[1], sqlVals[2], sqlVals[3], sqlVals[4], sqlVals[5], sqlVals[6], sqlVals[7], sqlVals[8], sqlVals[9], sqlVals[10], sqlVals[11], sqlVals[12], sqlVals[13], sqlVals[14], sqlVals[15], sqlVals[16], sqlVals[17], sqlVals[18], sqlVals[19], sqlVals[20]
+                    ])
+                except sqlite3.Error as error:
+                    print('Error occurred- Append Old Months ', error)
+                finally:
+                    if newDbConnection:
+                        newDbConnection.close()
+        except sqlite3.Error as error:
+                print('Error occurred: ', error)
+        finally:
+                if sqliteConnection:
+                    sqliteConnection.close()
+    def appendOldWeeks(self, oldFile, newFile):
+        try:
+            sqliteConnection = sqlite3.connect(oldFile)
+            cursor = sqliteConnection.cursor()
+            cursor.execute('SELECT * FROM prevDayOfWeeks')
+            result = cursor.fetchall()
+            sqlVals = []
+            for x in result:
+                sqlVals.append(x)
+            sqliteConnection.close()
+            if len(sqlVals)!= 0:
+                try:
+                    newDBConnection = sqlite3.connect(newFile)
+                    cursor = newDBConnection.cursor()
+                    cursor.execute('INSERT INTO prevDayOfWeeks (date, Month, dayOfWeek, pl) VALUES (?, ?, ?, ?)', [sqlVals[0], sqlVals[1], sqlVals[2], sqlVals[3]])
+                    newDBConnection.commit()
+                except sqlite3.Error as error:
+                    print('Error occurred- AppendOldWeeks', error)
+                finally:
+                    if newDBConnection:
+                        newDBConnection.close()
+           # cursor.execute('INSERT INTO prevDayOfWeeks (date, Month, dayOfWeek, pl) VAlues', sqlValueList)
+            #sqliteConnection.commit()
+        except sqlite3.Error as error:
+             print('Error occurred- ', error)
+        finally:
+            if sqliteConnection:
+                sqliteConnection.close()
+    def dayOfWeek(self, result, newFile):
+        #pl, contracts, date;
+        plList = []
+        dateList = []
+        for x in result:
+            plList.append(x[0])
+            dateList.append(x[2])
+        dailyTotalList = []
+        i = 1
+        while i < len(plList):
+            if (dateList[i] == dateList[i - 1]):
+                finalVal = plList[i] + plList[i - 1]
+                plList[i - 1] = ''
+                dateList[i - 1] = ''
+                plList[i] = finalVal
+                i += 1
+            else:
+                i += 1
+        l = 0
+        while l < len(plList):
+            if (plList[l] != ''):
+                dailyTotalList.append([plList[l], dateList[l]])
+                l += 1
+            else:
+                l += 1
+        print('DIALY TOTALS: ', dailyTotalList)
+        sqlValueList = []
+        for x in dailyTotalList:
+            dateText = x[1].split('-')
+            theDate = dt.datetime(int(dateText[0]), int(dateText[1]), int(dateText[2]))
+            #print(theDate.weekday())
+            sqlValueList.append( (x[1], dateText[1], theDate.weekday(), x[0]))
+            #.month
+            #.day
+        try:
+            sqliteConnection = sqlite3.connect(newFile)
+            cursor = sqliteConnection.cursor()
+            for x in sqlValueList:
+                cursor.execute('INSERT INTO prevDayOfWeeks (date, Month, dayOfWeek, pl) VALUES (?, ?, ?, ?)', [x[0], x[1], x[2], x[3]])
+            sqliteConnection.commit()
+        except sqlite3.Error as error:
+             print('Error occurred- DayOfWeek', error)
+        finally:
+            if sqliteConnection:
+                sqliteConnection.close()
+
+# d = dt.date(2002, 12, 31)
+# d.replace(day=26)
+# #########################################
 if __name__ == '__main__':
     api = Api()
     window = webview.create_window('Trade Tracker', 'tt2.html', js_api=api)
-    webview.settings['OPEN_DEVTOOLS_IN_DEBUG'] = False# new setting that just came out to allow refresh
+    #webview.settings['OPEN_DEVTOOLS_IN_DEBUG'] = False# new setting that just came out to allow refresh
     webview.start(debug = True)
     # webview.start()

@@ -1,5 +1,5 @@
 function reloadPage() {
-    window.location.reload()
+    window.location.reload();
 }
 window.addEventListener('pywebviewready', loadNotifications)
 function loadNotifications() {
@@ -23,10 +23,9 @@ function showNotifications(notificationList) {
     }
 }
 const changeFileButton = document.getElementById('changeFileButton');
-const chooseFile = document.getElementById('changeFileButton');
 
-chooseFile.addEventListener('click', ()=> {
-    pywebview.api.openFileExplorer().then(main)
+changeFileButton.addEventListener('click', ()=> {
+    pywebview.api.openFileExplorer().then(reloadPage)
     }
 )
 async function loadResults() {
@@ -46,6 +45,20 @@ async function main() {
         let hidden = data[5];
         let quickShow = data[6];
         let color = data[7];
+        let fileCustomList  = data[8];
+
+function popExtra() {
+    if (fileCustomList !== editable.length) {
+        editable.pop((editable.length - 1))
+        // for (x = 0; x < editable.length; x ++) {
+        //     if (fileCustomList.contains(editable[x])) {
+
+        //     } else {
+        //         editable.pop(x)
+        // }
+    }}
+    popExtra()
+
     changeFileButton.textContent = currentFile;
 
     const monthPL = document.getElementById('monthPL');
@@ -90,7 +103,7 @@ async function screenLayout() {
         for (i = 0; i < (editable.length); i ++ ) {
             iLabel = document.createElement('label');
             iLabel.classList.add("checkboxLabel");
-            iLabel.innerHTML = `${pyNameToTitleName(editable[i])} <input type="checkbox" id = "${editable[i]}" class="checkbox"/>`
+            iLabel.innerHTML = `<input type="checkbox" id = "${editable[i]}" class="checkbox"/> ${pyNameToTitleName(editable[i])} `
             customContainer.appendChild(iLabel);
         }
     }
@@ -558,7 +571,6 @@ const tradeZone = document.getElementById('tradeZone');
         else {
             todayPl.textContent = "P/L: $" + plList.reduce(addPl)
         }
-        
     }
     ////////////////////////////////////////////////////
     const closePic = document.getElementById('closePic');
@@ -725,28 +737,11 @@ const tradeZone = document.getElementById('tradeZone');
                         }
              let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editCallPut.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
              pywebview.api.saveEditTrade(currentFile, sqlId, editTradeValues, editable, checkBoxValues).then(setTimeout(()=> {
-                reloadTrade;
+                window.location.reload();
              }, 100))
             
             }  
         }
-        // saveEditButton.addEventListener('click',()=> {
-        //     console.log('saving trade')
-        // let checkBoxValues = [];
-        //     for (i = 0; i < editable.length; i++) {
-        //         currentCheckbox = document.getElementById("edit"+editable[i]);
-        //         console.log(currentCheckbox)
-        //             if (currentCheckbox.checked === true) {
-        //                 checkBoxValues.push("on")
-        //             } else {
-        //                 checkBoxValues.push("off")
-        //             }
-                
-        //     let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editCallPut.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
-        //      pywebview.api.saveEditTrade(currentFile, sqlId, editTradeValues, editable, checkBoxValues).then(window.location.reload())}
-        //     })//.then(window.location.reload())})  
-        
-        // }
         pywebview.api.loadEditTrade(currentFile, sqlId).then(populateEdit)
     
     }

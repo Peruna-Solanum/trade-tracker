@@ -7,6 +7,9 @@
 <link rel="icon" type="images/favicon.ico">
 <link rel="stylesheet" href="tt.css">
 <style>
+    #statZone {
+        padding: 10px;
+    }
     #tradeRules {
         border: 2px solid black;
         margin: 5px;
@@ -19,6 +22,18 @@ input[type = "checkbox"] {
     accent-color: white;
     vertical-align: middle;
     margin: 5px;
+}
+label, p{
+    margin: 10px;
+}
+.noClick{
+    /* color: rgb(94, 89, 89); */
+    border: darkGray;
+    /* background-color: blue; */
+    pointer-events: none;
+}
+.noClickCustom {
+    pointer-events: none;
 }
 </style>
 </head>
@@ -76,14 +91,14 @@ input[type = "checkbox"] {
                 <h2>Select Options:</h2>
                 <select id="tradeTimeFrame">
                         <option id="allSelect" value="all"> All Trades:</option>
-                        <option id="monthSelect" value="month">Month:</option>
+                        <!-- <option id="monthSelect" value="month">Month:</option> -->
                         <option id="byWeekSelect" value="byWeek">By Week:</option>
                         <option id="week1Select" value="week1">Week 1:</option>
                         <option id="week2Select" value="week2">Week 2:</option>
                         <option id="week3Select" value="week3">Week 3:</option>
                         <option id="week4Select" value="week4">Week 4:</option>
                         <option id="week5Select" value="week5"> Week 5:</option>
-                        <option id="quarterSelect" value="quarter">Quarter:</option>
+                        <!-- <option id="quarterSelect" value="quarter">Quarter:</option> -->
                         <option id="customTimeFrame" value="customTimeFrame">Custom: WORK IN PROGRESS</option>
                 </select>
                 <select id="collation">
@@ -94,8 +109,6 @@ input[type = "checkbox"] {
                 </select>
                 <select id="custom">
                     <option id="extras" value="">--Extras:--</option>
-                    <option id="dte" value="dte">Dte: WORK IN PROGRESS</option>
-                    <option id="rating" value="rating">By Rating:</option>
                     <option id="callPut" value="callPut">Call/Put:</option>
                 </select>
                 <label>
@@ -107,18 +120,136 @@ input[type = "checkbox"] {
                     <input type="checkbox" id="absolutelyAll" value="absolutelyAll" onclick = "allOff()">
                 </label>
                 <button type="button" id="submitRules">Calculate Stats:</button>
+                <p>Note: if you are missing trade data (ex: missing some dte data) that will throw off stats. 
+                    Go to the <a href="allTrades.html" ><strong>All Trades</strong></a> page and the trades highlighted in red have something missing.
+                </p>
             </div>
             </div>
+                            <h2>Stats:</h2>
             <div id="statZone">
-                <h2>Stats:</h2>
-                <template id="tableTemplate">
-                    <table id="statsTable">
-                            <caption id="caption">
-                            </caption>
+                <table id="dayOfWeekTable">
                         <thead>
                             <tr>
                                 <th scope="col"></th>
-                                <th scope="col" id="tableName"></th>
+                                <th scope="col"></th>
+                                <th scope="col" id="Monday">Monday:</th>
+                                <th scope = "col" id="Tuesday">Tuesday:</th>
+                                <th scope = "col" id="Wednesday">Wednesday:</th>
+                                <th scope = "col" id="Thursday">Thursday:</th>
+                                <th scope = "col" id="Friday">Friday:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th id="January">January</th>
+                                <td class="empty"></td>
+                                <td id="M1"></td>
+                                <td id="T1"></td>
+                                <td id="W1"></td>
+                                <td id="Th1"></td>
+                                <td id="F1"></td>
+                            </tr>
+                            <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M2"></td>
+                                <td id="T2"></td>
+                                <td id="W2"></td>
+                                <td id="Th2"></td>
+                                <td id="F2"></td>
+                           </tr>
+                           <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M3"></td>
+                                <td id="T3"></td>
+                                <td id="W3"></td>
+                                <td id="Th3"></td>
+                                <td id="F3"></td>
+                           </tr>
+                           <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M4"></td>
+                                <td id="T4"></td>
+                                <td id="W4"></td>
+                                <td id="Th4"></td>
+                                <td id="F4"></td>
+                           </tr>
+                           <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M5"></td>
+                                <td id="T5"></td>
+                                <td id="W5"></td>
+                                <td id="Th5"></td>
+                                <td id="F5"></td>
+                           </tr>
+                        </tbody>
+                </table>
+            </div>
+            <div id="overallStats">
+                <h4>Other Stats:</h4>
+                <ul>
+                    <li id="avgRating">Average Rating:</li>
+                </ul>
+            </div>"
+        </main>
+        <template id='tableTemplate'>
+            <table id="statsTable">
+                            <!-- <caption id="caption">
+                            </caption> -->
+                        <thead>
+                            <tr id="titleRow">
+                                <th scope="col" ></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="numTradesRow">
+                                <th scope="row" id="">Num Trades: </th>
+                            </tr>
+                            <tr id="numWinsRow">
+                                <th scope="row">Num Wins:</th>
+                            </tr>
+                            <tr id="numLossesRow">
+                                <th scope="row">Num Losses:</th>
+                            </tr>
+                            <tr id="plRow">
+                                <th scope="row">P/L:</th>
+                            </tr>
+                            <tr id="WWRow">
+                                <th scope="row">Win Ratio:</th>
+                            </tr>
+                            <tr id="wAmtRow">
+                                <th scope="row">Win Amt:</th>
+                            </tr>
+                            <tr id="lAmtRow">
+                                <th scope="row">Loss Amt:</th>
+                            </tr>
+                            <tr id="avgWRow">
+                                <th scope="row">Avg W:</th>
+                            </tr>
+                            <tr id="avgLRow">
+                                <th scope="row">Avg L:</th>
+                            </tr>
+                            <tr id="totalAvgRow">
+                                <th scope="row">Total Avg:</th>
+                            </tr>
+                            <tr id="predictionRow">
+                                <th scope="row">Projection</th>
+                            </tr>
+                            <tr id="wLRow">
+                                <th scope="row">W:L Ratio:</th>
+                            </tr>
+                        </tbody>
+                    </table>
+        </template>
+        <!-- <template id="tableTemplate">
+                    <table id="statsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col" id="caption"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,20 +295,12 @@ input[type = "checkbox"] {
                             </tr>
                         </tbody>
                     </table>
-                </template>
-            </div>
-        </main>
+                </template> -->
     <footer>
         <h4> TODO: Stats Page Specific</h4>
         <ul>
-            <li>put in top nav portion of the screen (next to the smiley face) the monthly p/l, WW%, and projection for the month (using past month's length)</li>
             <li>Put charts in the past data section (it makes more sense there)</li>
-            <li>actually show the data (albiet in a limited way with no edit/delete buttons to make sure the trades gathered are the correct ones)</li>
             <li>color charts based on if they are better than the past month chart or whatever, but get there later</li>
-            <li>create warning for trades that havenothingstat-wise just in case</li>
-            <li>
-                Also have it do data for each day of the week including showing the data for that (like as a normal table)
-            </li>
             <li>Have it say a message on whether or not you met your goals or if there is a lot you have to work on</li>
             <li>Make it so the add Everything button just grays out everything else (other than timeframe)</li>
             <li>add in an option for outlier- such as sick, weird issue, and even period cycle (this is some day though)</li>
@@ -185,11 +308,10 @@ input[type = "checkbox"] {
             <li>for DTE allow user to input the ranges that they think are important for DTE, </li>
             <li>Have settings so the stats page doesn't show stats you're not looking for</li>
             <li>Make this data printable/saveable elewhere</li>
-            <li> have it populate w/the options that you actually use (ex: bazinga strat), not just hard-writing it in.</li>
             <li> allow for custom date ranges eventually (w/in the same year)</li>
-            <li>avg trade length or time started etc.</li>
+            <li>avg trade length or time started ranges etc.</li>
             <li>Eventually create sliders for data with ranges</li>
-            <li>create modules for everything</li>
+            <li>Add into settings where you can make a custom a strategy and have it starred if it's your main strat </li>
         </ul>
     </footer>
 </body>

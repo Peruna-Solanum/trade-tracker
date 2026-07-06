@@ -1,5 +1,4 @@
 /////////////////////////////////////////////////////////////loadSettings/////////////////////////////////////////////////////////////
-const changeFileButton = document.getElementById('changeFileButton');
 const chooseFile = document.getElementById('changeFileButton');
 
 chooseFile.addEventListener('click', ()=> {
@@ -84,7 +83,7 @@ function happyFacePicker() {
         happyFace.textContent = '\u{1F60E}';
     }
     else {
-        console.log('I got nothing');
+        console.log('Happy face picker isn\'t working, no data is found');
     }
 }
 ///////Get Date/////////
@@ -155,17 +154,14 @@ function loadWeekRange() {
     let endDate = parseInt(currentDate.slice(8,10));
     //console.log(yearDate + " " + monthDate + " " + endDate)
     function addZeroToDate(data) {
-        console.log(data)
         for (i = 0; i < data.length + 1; i ++) {
             if (data[i].toString().length === 1) {
                 data[i] = "0" + data[i];
-                console.log(data[i])
                 return data
             } if (data[i].toString().length > 1){
                 return data
             }else {}
         }
-        console.log(data)
         return data
     }
     function dateRangeMaker() {
@@ -266,17 +262,33 @@ function absoluteOff() {
     const collationBox = document.getElementById('collation');
     const extraOptions = document.getElementById('custom');
 rulesSubmit.addEventListener('click', getStats)
+    //const tradeTimeFrame = document.getElementById('tradeTimeFrame');
+    collationBox.addEventListener('change', ()=> {
+        console.log('another value was selected');
+        if (collationBox.options[collationBox.selectedIndex].value === "dailyTotal" ||
+            collationBox.options[collationBox.selectedIndex].value === "dayOfWeek"
+        ) {
+            extraOptions.classList.add('noClick')
+        } else {extraOptions.classList.remove('noClick')}
+    })
+    tradeTimeFrame.addEventListener('change', ()=> {
+        if (tradeTimeFrame.options[tradeTimeFrame.selectedIndex].value === 'byWeek') {
+            collationBox.classList.add('noClick');
+            extraOptions.classList.add('noClick');
+        } else {
+            collationBox.classList.remove('noClick');
+            extraOptions.classList.remove('noClick');
+        }
+    })
 async function getStats() {
     let data = await userData;
     let currentFile = data[0]
-    //const tradeTimeFrame = document.getElementById('tradeTimeFrame');
-    const collationBox = document.getElementById('collation');
-    const extraOptions = document.getElementById('custom');
 
     let timeFrameVal = [];
     let collationVal = collationBox.options[collationBox.selectedIndex].value;
     let optionVal = extraOptions.options[extraOptions.selectedIndex].value;
     let singleMulti;
+    let timeName = tradeTimeFrame.options[tradeTimeFrame.selectedIndex].value;
     function weekDate(yr, month, date) {
         //2026-05-22
         let addZero;
@@ -321,8 +333,6 @@ async function getStats() {
                 fridays.push(i)
             }else {}
         }
-        console.log('Mondays: ' + mondays);
-        console.log('Fridays: ' + fridays);
         if (fridays[0] <6 && mondays[0] > 3) {//a partial week
             if (firstDate === 5) {//if partial week starts on friday
                 //console.log('STARTS ON FRIDAY')
@@ -373,7 +383,6 @@ async function getStats() {
                 week5.push(weekDate(year, month, 31))
             }
         }
-        console.log(finalWeekRanges)
         return finalWeekRanges
     }
     weekOfMonth();
@@ -389,10 +398,8 @@ async function getStats() {
             let weekAmts = weekOfMonth()
             let tradeDate= dateCalculator()
             let dateRange = tradeDate.slice(0,8)
-            console.log(tradeDate)
             if (time === "month") {
                 timeFrameVal.push(dateRange + "01", dateRange + "31");
-                console.log(timeFrameVal)
             } else if (time === "byWeek") {
                 singleMulti = "grouped"
                 timeFrameVal = weekAmts;
@@ -419,97 +426,135 @@ async function getStats() {
                 } else if (q3.includes(month)) {
                     timeFrameVal = [year + '-07-01', dateRange + '31']
                 } else { timeFrameVal = [year + '-10-01', dateRange + '31']}
-                console.log(timeFrameVal)
             }
         }
         let end = performance.now()
         console.log(end - start)
     } 
     timeRange();
-   pywebview.api.loadStats(currentFile, singleMulti, timeFrameVal, collationVal, optionVal ).then(calculateStats)
+   pywebview.api.loadStats(currentFile, singleMulti, timeFrameVal, collationVal, optionVal, timeName ).then(calculateStats)
 }
-async function calculateStats(dataList) {
-    console.log(dataList)
-    const data = dataList;
-    //let tableTitle = ('Table Title:' + tradeTimeFrame.options[tradeTimeFrame.selectedIndex].value + collationBox.options[collationBox.selectedIndex].value + extraOptions.options[extraOptions.selectedIndex].value)
-   // let numTrades = data.length;
-    let winTrades = [];
-    let lossTrades = [];
-    const profitLoss = data.reduce((a, b)=> a + b, 0)
-    for (i = 0; i < data.length; i++) {
-        if (data[i] < 0) {
-            lossTrades.push(data[i])
-        } else {winTrades.push(data[i])}
+
+ function calculateStats(dataVals){
+    statZone.innerHTML = "";
+    let template = document.getElementById('tableTemplate')
+    let clone = template.content.cloneNode(true);
+    statZone.appendChild(clone)
+    let data = dataVals;
+
+    const otherStats = document.getElementById('otherStats')
+    const avgRatingBox = document.getElementById('avgRating')
+    console.log(data[1][0])
+    function ratingVal() {
+        let totalRating = ((data[1][0].reduce((a, b)=> a + b, 0))/data[1][0].length).toFixed(2);
+        let ratingLetter;
+        if (totalRating < 1.2) {
+            ratingLetter = 'A+'
+        } else if (totalRating >= 1.2 && totalRating < 1.5) {
+            ratingLetter = 'A-'
+        } else if (totalRating >= 1.5 && totalRating < 1.8) {
+            ratingLetter = 'B+'
+        } else if (totalRating >= 1.8 && totalRating < 2.2) {
+            ratingLetter = 'B'
+        } else if (totalRating >= 2.2 && totalRating < 2.5) {
+            ratingLetter = 'B-'
+        } else if (totalRating >= 2.5 && totalRating < 2.8) {
+            ratingLetter = 'C+'
+        } else if (totalRating >= 2.8 && totalRating < 3.2) {
+            ratingLetter = 'C'
+        } else if (totalRating >= 3.2 && totalRating < 3.5) {
+            ratingLetter = 'C-'
+        } else if (totalRating >= 3.5 && totalRating < 3.8) {
+            ratingLetter = 'D+'
+        } else if (totalRating >= 3.8 && totalRating < 4.2) {
+            ratingLetter = 'D'
+        } else if (totalRating >= 4.2 && totalRating < 4.5) {
+            ratingLetter = 'D-'
+        } else if (totalRating >= 4.5) {
+            ratingLetter = 'F'
+        } else {}
+        avgRatingBox.textContent = ("Average Rating: " + ratingLetter);
     }
-    let ww = ((winTrades.length / data.length) * 100).toFixed(2)
+    ratingVal();
+   for (i = 1; i < data.length; i++) {
+    let currentArray = data[i];
 
-    let wAmt = winTrades.reduce((a, b)=> a + b, 0);
-    let lAmt = lossTrades.reduce((a, b)=> a + b, 0)
-    let avgW = wAmt / winTrades.length;
-    let avgL = lAmt / lossTrades.length;
-    function projection() {
-        let lossPercent = 100 - ww
-        let win = avgW * ww;
-        let loss = avgL * lossPercent;
-        return (win + loss).toFixed(2)
+    let title = data[0];
+        function columnStats(arrayList, listTitle) {
+            let winList = [];
+            let lossList = [];
+            for (i = 0; i < arrayList.length; i++) {
+                if (arrayList[i] < 0) {
+                    lossList.push(arrayList[i])
+                } else {winList.push(arrayList[i])}
+        }
+            let totalPl =  arrayList.reduce((a, b)=> a + b, 0);
+            let numTrades = arrayList.length;
+            let numWins = winList.length;
+            let numLosses = lossList.length;
+            let ww = ((winList.length / arrayList.length) * 100).toFixed(2)
+            let wAmt = winList.reduce((a, b)=> a + b, 0);
+            let lAmt = lossList.reduce((a, b)=> a + b, 0);
+            let avgW = (wAmt / numWins);
+            let avgL = (lAmt / numLosses);
+            let totalAvg = (totalPl / arrayList.length).toFixed(2)
+            function projection() {
+                let lossPercent = 100 - ww
+                let win = avgW * ww;
+                let loss = avgL * lossPercent;
+                return (win + loss).toFixed(2)
+            }
+            function wlRatio() {
+                let ratio = (Math.abs(avgL) / avgW).toFixed(2);
+                return `1 : ${ratio}`
+            }
+            newColumn(listTitle, numTrades, totalPl, numWins, numLosses, ww, wAmt, lAmt, avgW.toFixed(), avgL.toFixed(), totalAvg,projection(),wlRatio(),  i)
+        }
+        //needs to be x not i or else it'll use the wrong number since this is in the for loop
+            for (x = 1; x < currentArray.length; x++) {
+                columnStats(currentArray[x], title[x]);
+            }
+        
+        
+ }
+
+}
+function newColumn(listTitle, numTrades, totalPl, numWins, numLosses, ww, wAmt, lAmt, avgW, avgL,
+    totalAvg,projection, wlRatio, num) {
+            const titleRow = document.getElementById('titleRow');
+    const numTradesRow = document.getElementById('numTradesRow');
+    const numWinsRow = document.getElementById('numWinsRow');
+    const numLossesRow = document.getElementById('numLossesRow');
+    const plRow = document.getElementById('plRow');
+    const WWRow = document.getElementById('WWRow');
+    const wAmtRow = document.getElementById('wAmtRow');
+    const lAmtRow = document.getElementById('lAmtRow');
+    const avgWRow = document.getElementById('avgWRow');
+    const avgLRow = document.getElementById('avgLRow');
+    const totalAvgRow = document.getElementById('totalAvgRow');
+    const predictionRow = document.getElementById('predictionRow');
+    const wLRow = document.getElementById('wLRow');
+        let newTH = document.createElement('th');
+        newTH.id = 'th' + listTitle;
+        newTH.textContent = listTitle;
+        titleRow.appendChild(newTH)
+    
+    function newData(location, value) {
+        let newtd = document.createElement('td');
+        newtd.id = location.id.slice(0, -3) + listTitle;
+        newtd.textContent = value;
+        location.appendChild(newtd)
     }
-
-    //let projection = ((avgW * ww) + (avgL * (100-ww)))
-    let totalAvg = profitLoss / data.length
-   // console.log(tableTitle);
-    console.log('winTrades: ' + winTrades)
-    console.log('lossTrades: ' + lossTrades)
-    console.log('profitLoss: ' + profitLoss)
-    console.log('WW: ' + ww + '%')
-    console.log('win amt: ' + wAmt)
-    console.log('l amt: ' +lAmt)
-    console.log('avgW: ' + avgW.toFixed(2));
-    console.log('avg L ' + avgL.toFixed(2));
-    console.log('projection: ' + projection() )
-    console.log('total Avg: ' + totalAvg.toFixed(2))
-    let statZone = document.getElementById('statZone')
-    let tableTemplate = document.getElementById('tableTemplate')
-    let newTable = tableTemplate.content.cloneNode(true);
-            //let clone = tradeTemplate.content.cloneNode(true);
-            statZone.appendChild(newTable);
-    let tableDiv = document.getElementById('statsTable');
-    let caption = document.getElementById('caption');
-    let tableName = document.getElementById('tableName');
-    let numTrades = document.getElementById('numTrades');
-    let numWins = document.getElementById('numWins');
-    let numLosses = document.getElementById('numLosses');
-    let tablePl = document.getElementById('tablePl');
-    let tableWW = document.getElementById('WW');
-    let tableAvgW = document.getElementById('tableAvgW');
-    let tableAvgL = document.getElementById('tableAvgL')
-    let tableTotalAvg = document.getElementById('totalAvg');
-    let tableProjection = document.getElementById('projection')
-    let tableWLRatio = document.getElementById('wR');
-
-    tableDiv.id = "statsTable" + 1;
-    caption.id = "caption" + 1;
-    tableName.id = "tableName" + 1;
-    numTrades.id = "numTrades" + 1;
-    numWins.id = "numWins" + 1;
-    numLosses.id = "numLosses" + 1;
-    tablePl.id = "tablePl" + 1;
-    tableWW.id = "tableWW" + 1;
-    tableAvgW.id = "tableAvgW" + 1;
-    tableAvgL.id = "tableAvgL" + 1;
-    tableTotalAvg.id = "tableTotalAvg" + 1;
-    tableProjection.id = "tableProjection" + 1;
-    tableWLRatio.id = "tableWLR" + 1;
-
-    caption.textContent = (collationBox.options[collationBox.selectedIndex].value, extraOptions.options[extraOptions.selectedIndex].value,
-        tradeTimeFrame.options[tradeTimeFrame.selectedIndex].value)
-    numTrades.textContent  = data.length;
-    numWins.textContent = winTrades.length;
-    numLosses.textContent = lossTrades.length;
-    tablePl.textContent = profitLoss;
-    tableWW.textContent = ww + '%';
-    tableAvgW.textContent = avgW.toFixed(2);
-    tableAvgL.textContent = avgL.toFixed(2);
-    tableTotalAvg.textContent = totalAvg.toFixed(2);
-    tableProjection.textContent = projection()
-
+    newData(numTradesRow, numTrades);
+    newData(numWinsRow, numWins);
+    newData(numLossesRow, numLosses);
+    newData(plRow, totalPl);
+    newData(WWRow, ww);
+    newData(wAmtRow, wAmt);
+    newData(lAmtRow, lAmt);
+    newData(avgWRow, avgW);
+    newData(avgLRow, avgL);
+    newData(totalAvgRow, totalAvg);
+    newData(predictionRow, projection);
+    newData(wLRow, wlRatio);
 }
