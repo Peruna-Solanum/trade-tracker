@@ -8,6 +8,9 @@
 <link rel="icon" type="images/favicon.ico">
  <link rel="stylesheet" href="tt.css">
 <style>
+    .bigButton {
+        margin: 10px;
+    }
     #pageTitle {
         font-size: 2.5em;
     }
@@ -28,11 +31,11 @@ p {
 .majorSection{
     margin: 10px;
     border: 3px solid black;
-    background-color: rgb(75, 74, 74);
+    background-color: light-dark(lightgray, rgb(75, 74, 74));
 }
  input, select{
     margin: 10px;
-    accent-color: lightgray;
+    accent-color: light-dark(gray, lightgray);
 }
     .checkmark{
         background-image: url('images/checkmark.png');
@@ -46,7 +49,7 @@ p {
 }
 .editList {
     border: 2px solid black;
-    background-color: lightgray;
+    background-color: light-dark(gray, lightgray);
 }
 .XY {
     background-size: 95%;
@@ -81,6 +84,11 @@ li {
 }
 .noClick{
     pointer-events: none;
+    color: gray;
+    background-color: light-dark(lightgray, gray);
+}
+.noClickCustom {
+    pointer-events: none;
 }
 label {
     margin: 10px;
@@ -90,7 +98,7 @@ input {
 }
 .settingList {
     border: 2px solid rgb(95, 94, 94);
-    background-color: rgb(88, 87, 87);
+    background-color: light-dark(rgb(189, 187, 187), rgb(88, 87, 87));
     text-align: center;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -102,7 +110,7 @@ input {
 #inputCustom {
     display: flex;
     justify-content: space-evenly;
-    background-color: rgb(117, 116, 116);
+    background-color: light-dark(rgb(221, 217, 217), rgb(117, 116, 116));
     border: 1px solid rgb(194, 190, 190);
     border-radius: 5px;
     margin-top: 0px;
@@ -117,13 +125,13 @@ input {
     margin-right: 10px;
 }
 #submitCustom {
-    background-color: rgb(150, 146, 146);
+    background-color: light-dark(white,  rgb(150, 146, 146));
 }
 #newName {
-    background-color: rgb(78, 78, 78);
+    background-color: light-dark(white, rgb(78, 78, 78));
 }
 #newColor {
-    background-color: rgb(148, 146, 146);
+    background-color: light-dark(white, rgb(148, 146, 146));
         border: none;
     border-radius: 3px;
 }
@@ -134,14 +142,15 @@ input {
     min-width:7em;
 }
 .notReady {
-    /* pointer-events: none; */
-    color: gray;
-    border: 1px solid gray;
-    background-color: rgb(112, 112, 112)
+    pointer-events: none;
+    color: light-dark(rgb(189, 188, 188), gray);
+    border: 1px solid light-dark(rgb(189, 188, 188),  gray);
+    background-color: light-dark(lightgray, rgb(112, 112, 112));
 }
 .ready {
-    color: white;
-    border: 1px solid white;
+    color: light-dark(black, white);
+    border: 1px solid light-dark(black, white);
+    background-color: light-dark(white,rgb(112, 112, 112) );
 }
 #createNewFile {
     margin: 15px;
@@ -233,8 +242,8 @@ input {
     <template id="notificationTemplate">
         <div id="notification" class="notificationBox">
             <button type="button" id="notifX" onclick="deleteNotification(this.id)">X</button>
-            <div id="notificationText"></div>
-            <div id="notificationColor"></div>
+            <div id="notificationText" class="notificationBubble"></div>
+            <div id="notificationColor" class="notificationBubble"></div>
         </div>
     </template>
 <hr>
@@ -286,15 +295,15 @@ input {
         <button type="button" id="cancelCustom" onclick="cancelEdit()" class="hidden">Cancel:</button>
         <button type="button" id="customEdit" class="editButton" onclick="editCustom(this.id)">edit</button>
         <div id="customName" class="listName"></div>
-        <label class="noClick" id="hiddenLabel">
+        <label class="noClickCustom" id="hiddenLabel">
             <input type="checkbox" id="hiddenCheck">
             Hidden:
         </label>
-        <label class="noClick" id="quickShowLabel">
+        <label class="noClickCustom" id="quickShowLabel">
             <input type="checkbox" id="quickShowCheck">
             QuickShow:
         </label>
-        <label class="noClick" id="colorLabel">
+        <label class="noClickCustom" id="colorLabel">
             Color:
             <input type="color" id="colorCheck">
         </label>
@@ -306,8 +315,13 @@ input {
             <p>Select the file name and file location. NOTE: The file name is j2   bst the plain text, the .db will be added automatically</p>
             <hr>
             <input type="text" id="newFileName" placeholder = "New File Name:">
-            <button type="Button" id="fileLocationButton" onclick="saveFolderLocation()">Pick File Location:</button>
-            <button type="button" id="createNewFile" class="notReady" class="bigButton">Create New File:</button>
+            <button type="Button" id="fileLocationButton" onclick="saveFolderLocation('folder', this.id)">Pick File Location:</button>
+            <label>
+                <input type="checkbox" id="includePastData">
+                Include Past Data: keeps data from previous months 
+            </label>
+            <button type="Button" id="copyPastData" class="notReady" class="bigButton"  onclick="saveFolderLocation('file', this.id)">Location of Past Data:</button>
+            <button type="button" id="createNewFile" class="notReady" class="bigButton" onclick="createNewFile()">Create New File:</button>
         </div>
     </main>
 <!-- <footer>

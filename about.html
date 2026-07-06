@@ -1,26 +1,21 @@
 <!doctype html>
 <head lang="en">
-<meta charset="UTF-8">
-<script src="tt2.js" defer></script>
-<title>Trade Tracker: Main Page</title>
-<link rel="icon" type="favicon.ico">
-<link rel="stylesheet" href="tt.css">
-<style>
-    .bulletDiv{
-        bordeR: 1px solid darkgray;
-        margin: 10px;
-        padding: 10px;
-        border-radius: 5px;
-        background-color: rgb(61, 60, 60);
-    }
-    .noBullet li {
-       list-style-type: none;
-    }
-</style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content = 'width=device-width, initial-scale=1.0'/>
+    <title>Trade Tracker: About</title>
+    <link rel="icon" type="favicon.ico">
+    <link rel="stylesheet" href="tt.css">
+    <script src="tt2.js" defer></script>
+    <style>
+        h2 {
+            font-weight: bold;
+            margin-left: unset;
+            padding-left: unset;
+        }
+    </style>
 </head>
 
 <body id="body">
-    <div id="div"></div>
             <div id="screenDarkener" class="hidden" ></div>
             <div id="closePic" class="hidden" >X</div>
         <header>
@@ -71,107 +66,69 @@
                 <a href="">Tutorial</a>
         </nav>
     </div>
-        <div id="empty"></div>
-        <div id="emptyStandard"></div>
-        <main id = "main">
-            <h1>About:</h1>
+    <main>
+        <h1>About:</h1>
             <p>
                 This is Trade Tracker. You can input trade details, pics, etc. and will be able to automatically
-                find the stats on your data without a subscription/doing things by hand, with more options to get 
-                data based off of custom strategies/groupings which to my knowledge doesn't really exist. Keep track of
-                your gambling addiction today!
+                find the stats on your data without a subscription or doing things by hand. You can also factor in
+                custom strategies and compare how well they do with a click of a button!
             </p>
             <p>This project uses python, js, css, html, sqlite, and pywebview to tie it all together.</p>
+            <hr>
+        <section>
             <h2>Features:</h2>
-            <div class="bulletDiv">
-            <p>Overall</p>
+            <h3>Overall:</h3>
             <ul>
-                <li>shows the connected file (that automatically open when
-                    you open the program)
-                </li>
-                <li>a little emoji that shows you're progress at a glance</li>
-                <li>the total profit/loss of the whole file at a glance</li>
-                <li>the win percentage of your total trades</li>
-                <li>custom visibility settings where you can choose what you do/don't want to see</li>
+                <li>Your current file is remembered and opened immediately.</li>
+                <li>A little emoji that shows you're progress at a glance</li>
+                <li>The total profit/loss of the whole file at a glance</li>
+                <li>The win percentage of your total trades</li>
+                <li>Custom visibility settings where you can choose what you do/don't want to see</li>
                 <li>Can zoom in on photos and edit/delete trades easily right where they are </li>
-                <li>responsive light/dark mode based off of your computer</li>
+                <li>Responsive light/dark mode based off of your computer</li>
             </ul>
-        </div>
-        <div class="bulletDiv">
-            <p>Home page:</p>
+            <h3>Home page:</h3>
             <ul>
-                <li>An easy way to input trades (including automatic dates and pics if you wish)</li>
+                <li>Quick, easy way to input trades (including automatic dates and pics).</li>
                 <li>A note section at the bottom where you can quickly input extra notes before you input it as a trade 
                     (just not pictures right now that won't work out too well)</li>
-                <li>custom notifications in the top, with choice of color</li>
-                <li>The option to show trades either for the day or for the week</li>
-                <li>Trades are colored based off of the day of the week for easy seeing</li>
+                <li>Custom notifications. </li>
+                <li>Showing all from the day/week.</li>
+                <li>Color coding by day of week. </li>
             </ul>
-        </div>
-        <div class="bulletDiv">
-            <p>Stat Page:</p>
+            <h3>Stat Page:</h3>
             <ul>
                 <li>Can quickly get stats based off of specific timeframes, variables, and even compare custom
-                    strategies in comparison to the rest of the trades
+                    strategies in comparison to all of the data.
                 </li>
             </ul>
-            <p>All Trades:</p>
+            <h3>All Trades:</h3>
             <ul>
-                <li>Can see/edit/delete all trades in the file, can also see if details are missing for some</li>
+                <li>Can see, edit, and delete any inputs. Red outlines means details are missing.</li>
             </ul>
-        </div>
-        <div class="bulletDiv">
-            <p>Settings:</p>
+            <h3>Settings:</h3>
             <ul>
-                <li>Can set favorite settings, notifications, and can hide/show certain variables</li>
+                <li>Set favorite settings, notifications, and choose what data you want to see.</li>
             </ul>
-            <p>New File:</p>
+            <h3>New File:</h3>
             <ul>
-                <li>Can review settings before making a new file </li>
+                <li>Review settings before making a file.  </li>
             </ul>
-        </div>
+        </section>
+        <hr>
         <div>
-            <h2>Version: 1.0.0 (6/9/26)</h2>
-            <ul class="noBullet">
-                <li> Version (1.0.0) 6/9/26- This is the first release of Trade Tracker. Only the bare minimum works here (
-                    can input trades, can see all trades, can get very basic stats, and can create a new file,
-                    that's about it). The all trades page may also be very slow but at least it works.
+            <h2>Version:</h2>
+            <ul>
+                <li>
+                    Version (1.1.0)- 
+                </li>
+                <li> 
+                    Version (1.0.0) 6/9/26- This is the first release. Only the bare minimum works (
+                    can input, can see all, very basic stats, create new file). The trades page is also very 
+                    slow but that can get fixed later. 
                 </li>
             </ul>
         </div>
-        <div>
-            <h2>Progress:</h2>
-            <div>
-            <p>Total hours spent on this project: (not counting the time it took to learn how to get pywebview to work and get a python/db connection to work as well, which took like 3 months since Janguary)Solely constructing this project</p>
-            <ul>
-                <li>1.0.0: Start 3.24.26 End 6.9.26, 39 days of actual working(being sick for at least 3 of them)
-                    (out of 52 possible weekdays for it, not counting the fridays that I don't ahve itme for, it would be
-                    doing it for 39 out of 42 days), 
-                    93.5 hours of work, 12 work days (only counting 100% focused work which still wouldn't happen like
-                     that), avg 2.45 hours of focused work a day, which is given that I have had to do things 
-                    throughout the week too. If priced at $15 an hour this would only be $1402.5 worth of work</li>
-                <li></li>
-            </ul>
-            </div>
-            <p>Total time spent on this project: 93.5 hrs</p>
-        </div>
-        </main>
-        <footer>
-            TODO:
-            <ul>
-                <li>Give an option to set favorite file in settings too</li>
-                <li>fix light/dark mode colorations now that things are mostly fine</li>
-                <li>optimize the all trades file section or add a bar or something</li>
-                <li>add notification settings to where they can be X bars across the top</li>
-                <li>change setting file to differentiate btwn editable and hideable and such</li>
-                <li>make picBoxes have an x that you can delete easily and a hover to see or something</li>
-                <li>make custom ministat emoji choice ranges</li>
-                <li>history of past trades</li>
-                <li>clear up what happens when you start with no file ahead of time</li>
-                <li>organize it in a zip file so the user can just open it, move it, and they're fine</li>
-                <li>make sure the naming conventions match each code type</li>
-                <li>allow the option to actually reverse to presets</li>
-            </ul>
-        </footer>
+    </main>
 </body>
 </html>

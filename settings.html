@@ -159,8 +159,10 @@ input {
     </template>
 <h2>Current Settings:</h2>
 <h3>Hidden:</h3>
+<p>These are data that you don't want to see at all (may affect certain calculations)</p>
 <ul id="hiddenList"></ul>
 <h3>Quick Show:</h3>
+<p>These are visible when you input a trade, not in the All Trades section</p>
 <ul id="quickShowList"></ul>
 <h3>Custom:</h3>
 <p>Note: If you want to add/delete your list of custom variables, you can do so when you create a new file (or else there would be data loss). Instead hide unwanted variables.</p>
@@ -169,7 +171,7 @@ input {
 </ul>
 <template id='listTemplate'>
     <li id="bullet">
-        <button type="buttom" id="cancelButton" onclick="cancelEdit()" class="hidden">Cancel:</button>
+        <button type="buttom" id="cancelButton"  class="hidden">Cancel:</button>
         <button type="button" id="editButton" class="editButton" onclick="editSetting(this.id)"></button>
         <div id="XY" class = "XY"></div>
         <div id="listName" class="listName"></div>
@@ -177,7 +179,7 @@ input {
 </template>
 <template id="customTemplate">
     <li id="customBullet">
-        <button type="button" id="cancelCustom" onclick="cancelEdit()" class="hidden">Cancel:</button>
+        <button type="button" id="cancelCustom"  class="hidden">Cancel:</button>
         <button type="button" id="customEdit" class="editButton" onclick="editCustom(this.id)">edit</button>
         <div id="customName" class="listName"></div>
         <label class="noClick" id="hiddenLabel">
@@ -194,6 +196,16 @@ input {
         </label>
     </li>
 </template>
+<h3>Goal Range:</h3>
+    <p>Set price goals so the emojis and more can reflect your realistic price goals.</p>
+        <button type="button" id="cancelCustom"  class="hidden">Cancel:</button>
+        <button type="button" id="customEdit" class="editButton" onclick="editCustom(this.id)">edit</button>
+    <ul>
+
+        <li id="happyFaceGoals" >Ideal Price-Range: <input type = "text" id="lowerGoal"/> <input type="text" id="upperGoal"></li>
+        <li id="dailyGoal">Daily Goal: <input type="number" id="dailyLimit"></li>
+        <li id="yesStopMe">Stop Me when I've Met My Goal: </li>
+    </ul>
 </main>
 
 
@@ -201,33 +213,10 @@ input {
     <h5>TODO</h5>
     <ul>
         <li>Fix the cancel edit so that way you don't get flashbanged repeatedly</li>
-        <li>Explanation of what everything does (like quickShow) when you over over them </li>
-        <li>custom color scheme and text-size changer eventually</li>
     </ul>
 </footer>
 </body>
 </html>
-<!-- CREATE TABLE "Trades" (
-	"id"	INTEGER NOT NULL UNIQUE COLLATE BINARY,
-	"pl"	NUMERIC NOT NULL COLLATE BINARY,
-	"date"	TEXT COLLATE BINARY,
-	"trade_start"	TEXT COLLATE BINARY,
-	"trade_length"	INTEGER COLLATE BINARY,
-	"explanation"	TEXT COLLATE BINARY,
-	"contracts"	INTEGER NOT NULL COLLATE BINARY,
-	"dte"	INTEGER COLLATE BINARY,
-	"rating"	TEXT COLLATE BINARY,
-	"callput"	INTEGER COLLATE BINARY,
-	"countertrend"	INTEGER COLLATE BINARY,
-	"confirmation"	INTEGER COLLATE BINARY,
-	"chased"	INTEGER COLLATE BINARY,
-	"cut_short"	INTEGER COLLATE BINARY,
-	"pic1"	BLOB COLLATE BINARY,
-	"pic2"	BLOB COLLATE BINARY,
-	"pic3"	BLOB COLLATE BINARY,
-	"pic4"	BLOB COLLATE BINARY,
-	PRIMARY KEY("id" AUTOINCREMENT)
-); -->
 <!-- UPDATE SETTINGS 
 SET Preferred_File = 'lalala' 
 WHERE User = 'Bazinga' -->
