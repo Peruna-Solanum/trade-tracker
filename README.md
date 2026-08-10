@@ -17,9 +17,8 @@ you know how well you're doing.
 ### Why Make It?
 
 - I wanted to learn how to use databases and switch out my data whenever I wanted to, which led me to creating a pywebview app.
-
-- The reasoning is twofold: 1. Sometimes I like to see if my prediction of a stock/etc. movement is correct, but I like to group my guesses based off of the idea/strategy that I had at the time. Most trade journals cost money and/or don't allow that sort of customization. As such, individually calculating statistics for everything individually is a pain. 
-
+- Mostly for fun, don't take too seriously.
+- I'd like to record my stock/etc. guesses before I put real money in anything (but can be used for the real thing too). Existing trade journals don't allow for easily grouping by type or strategy which makes calculating the statistics a pain. 
 
 ### Properties
 - Tech-wise:
