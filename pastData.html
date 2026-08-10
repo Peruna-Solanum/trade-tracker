@@ -86,7 +86,7 @@
                         <option id="singleContract">Single Contract</option>
                     </select>
                     <select>
-                        <option id="callPut" value="callPut">Call/Put</option>
+                        <option id="buySell" value="buySell">Call/Put</option>
                         <option id="callOnly" value="callOnly">Call</option>
                         <option id="putOnly" value="putOnly">Put</option>
                     </select>
@@ -125,7 +125,7 @@
                                 <div class="contracts" id="contractNum"></div>
                                 <div class="dte" id="dte">dte: </div>
                                 <div class="rating"id="rating"></div>
-                                <div class="callput" id="callput"></div>
+                                <div class="buySell" id="buySell"></div>
                                 <div class="countertrend" id="countertrend"></div>
                                 <div class="confirmation" id="confirmation"></div>
                                 <div class="chased" id="chased"></div>
@@ -312,6 +312,66 @@
                 </div>
             </div>
         </main>
+        <table id="dayOfWeekTable">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col" id="Monday">Monday:</th>
+                                <th scope = "col" id="Tuesday">Tuesday:</th>
+                                <th scope = "col" id="Wednesday">Wednesday:</th>
+                                <th scope = "col" id="Thursday">Thursday:</th>
+                                <th scope = "col" id="Friday">Friday:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th id="January">January</th>
+                                <td class="empty"></td>
+                                <td id="M1"></td>
+                                <td id="T1"></td>
+                                <td id="W1"></td>
+                                <td id="Th1"></td>
+                                <td id="F1"></td>
+                            </tr>
+                            <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M2"></td>
+                                <td id="T2"></td>
+                                <td id="W2"></td>
+                                <td id="Th2"></td>
+                                <td id="F2"></td>
+                           </tr>
+                           <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M3"></td>
+                                <td id="T3"></td>
+                                <td id="W3"></td>
+                                <td id="Th3"></td>
+                                <td id="F3"></td>
+                           </tr>
+                           <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M4"></td>
+                                <td id="T4"></td>
+                                <td id="W4"></td>
+                                <td id="Th4"></td>
+                                <td id="F4"></td>
+                           </tr>
+                           <tr>
+                                <th class="empty"></th>
+                                <td class="empty"></td>
+                                <td id="M5"></td>
+                                <td id="T5"></td>
+                                <td id="W5"></td>
+                                <td id="Th5"></td>
+                                <td id="F5"></td>
+                           </tr>
+                        </tbody>
+                </table>
     <footer>
         <h4> TODO: Stats Page Specific</h4>
         <ul>

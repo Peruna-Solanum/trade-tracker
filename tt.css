@@ -671,3 +671,11 @@ td {
     border-radius: 5px;
     font-size: 18px;
 }
+#typeBox {
+    background-color: lightgray;
+    color: black;
+    border:2px solid black;
+    user-select: all;
+    padding: 3px;
+    visibility: hidden;
+}

@@ -35,6 +35,7 @@
                 <a href="about.html">About/Release Notes:</a>
                 <a href="">Tutorial</a>
         </nav>
+        <div id="typeBox" contentediable = "plaintext-only"></div>
         </header>
         <div id="fakeHeader">
         <div id="topHeader">
@@ -127,10 +128,10 @@
                         <option id="D" value="D">D</option>
                         <option id="F" value="F">F</option>
                     </select>  
-                    <select name="callPut" id="callPut">
-                        <option id="noCallPut" value="">Call/Put:</option>
-                        <option id ="call" value="call">Call</option>
-                        <option id="put" value="put">Put</option>
+                    <select name="longShort" id="longShort">
+                        <option id="chooseDirection">Direction:</option>
+                        <option id ="long" value="long">Long</option>
+                        <option id="short" value="short">Short</option>
                     </select>
                     <div id="customContainer">
                     </div>
@@ -162,9 +163,10 @@
                         <option id="editD" value="D">D</option>
                         <option id="editF" value="F">F</option>
                     </select>  
-                    <select name="callPut" id="editcallPut">
-                        <option id ="call" value="call">Call</option>
-                        <option id="editput" value="put">Put</option>
+                    <select name="longShort" id="editlongShort">
+                        <option id="noLongShort" value="">Direction:</option>
+                        <option id ="long" value="long">Long</option>
+                        <option id="short" value="short">Short</option>
                     </select>
                     <div id="editCustomBox">
                     </div>
@@ -221,7 +223,7 @@
             TODO:
             <ul>
                 <li>make it so addTrades isn't slow</li>
-                <li>Add a "ticker" option in settings and change call/put to buy/sell</li>
+                <li>Add a "ticker" option in settings and change call/put to long/short</li>
                 <li>make picBoxes have an x that you can delete easily and a hover to see or something</li>
                 <li>make custom ministat emoji choice ranges</li>
                 <li>make sure the naming conventions match each code type</li>

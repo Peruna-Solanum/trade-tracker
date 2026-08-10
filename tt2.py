@@ -217,7 +217,7 @@ class Api:
                 customArray = customLength.split(',')
                 currentCustomList = []
                 for x in customArray:
-                    currentCustomList.append(x[:-8])
+                    currentCustomList.append(x[:-7])
                 return [pl_added, data_ww, currentCustomList]
             except sqlite3.Error as error:
                 print('Error occurred- ', error)
@@ -286,14 +286,14 @@ class Api:
             else :
               print('nothinghas changed')
               #sqlite>SELECT * FROM emp_master WHERE emp_id BETWEEN 1 AND 3;
-    def saveTrade(self, file, plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal, dteVal, selectGradeVal, callPut,
+    def saveTrade(self, file, plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal, dteVal, selectGradeVal, buySell,
         pic1, pic2, pic3, pic4, customNames, customVal): 
         if (os.path.isfile(file)):
             try: 
               sqliteConnection = sqlite3.connect(file)
               cursor = sqliteConnection.cursor()
-              dbParameters = ['pl', 'date', 'trade_start', 'trade_length', 'explanation', 'contracts', 'dte', 'rating', 'callput', 'pic1', 'pic2', 'pic3', 'pic4']
-              dbData = [plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal,dteVal, selectGradeVal, callPut, pic1, pic2, pic3, pic4]
+              dbParameters = ['pl', 'date', 'trade_start', 'trade_length', 'explanation', 'contracts', 'dte', 'rating', 'buySell', 'pic1', 'pic2', 'pic3', 'pic4']
+              dbData = [plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal,dteVal, selectGradeVal, buySell, pic1, pic2, pic3, pic4]
               for x in customNames:
                   dbParameters.append(x)
               for x in customVal:
@@ -308,7 +308,7 @@ class Api:
               sqlCode = 'INSERT INTO Trades('+ finaldbParameters[:-2]+ ') VALUES (' + finalValueLength+ ')'
               cursor.execute(sqlCode, dbData)
               sqliteConnection.commit()
-              #cursor.execute("INSERT INTO Trades(pl, date, trade_start, trade_length, explanation, contracts, dte, rating, callput, pic1, pic2, pic3, pic4, countertrend, confirmation, chased, cut_short ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal, dteVal, selectGradeVal, callPut, countertrendVal, confirmationVal, chasedVal, cutShortVal, pic1, pic2, pic3, pic4))
+              #cursor.execute("INSERT INTO Trades(pl, date, trade_start, trade_length, explanation, contracts, dte, rating, buySell, pic1, pic2, pic3, pic4, countertrend, confirmation, chased, cut_short ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal, dteVal, selectGradeVal, buySell, countertrendVal, confirmationVal, chasedVal, cutShortVal, pic1, pic2, pic3, pic4))
               response = "Trade Was Saved"
               print(response)
               return response
@@ -353,7 +353,7 @@ class Api:
             sqliteConnection= sqlite3.connect(file)
             cursor = sqliteConnection.cursor()
             print('Editing Trade')
-            dbParameters = ['id', 'pl', 'date', 'trade_start', 'trade_length', 'explanation', 'contracts', 'dte', 'rating', 'callput', 'pic1', 'pic2', 'pic3', 'pic4']
+            dbParameters = ['id', 'pl', 'date', 'trade_start', 'trade_length', 'explanation', 'contracts', 'dte', 'rating', 'buySell', 'pic1', 'pic2', 'pic3', 'pic4']
             dbData = [currentId, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12]]
             for x in customNames:
                 dbParameters.append(x)
@@ -370,8 +370,8 @@ class Api:
             print(sqlCode, dbData)
             cursor.execute(sqlCode, dbData)
             sqliteConnection.commit()
-            #cursor.execute("INSERT INTO Trades(pl, date, trade_start, trade_length, explanation, contracts, dte, rating, callput, pic1, pic2, pic3, pic4, countertrend, confirmation, chased, cut_short ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal, dteVal, selectGradeVal, callPut, countertrendVal, confirmationVal, chasedVal, cutShortVal, pic1, pic2, pic3, pic4))
-            # cursor.execute("REPLACE INTO Trades (id, pl, date, trade_start, trade_length, explanation, contracts, dte, rating, callput, countertrend, confirmation, chased, cut_short, pic1, pic2, pic2, pic4) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (idVal, newTradeValues[0], newTradeValues[1], newTradeValues[2], newTradeValues[3], newTradeValues[4], newTradeValues[5], newTradeValues[6], newTradeValues[7], newTradeValues[8], newTradeValues[9], newTradeValues[10], newTradeValues[11], newTradeValues[12], newTradeValues[13], newTradeValues[14], newTradeValues[15], newTradeValues[16]))
+            #cursor.execute("INSERT INTO Trades(pl, date, trade_start, trade_length, explanation, contracts, dte, rating, buySell, pic1, pic2, pic3, pic4, countertrend, confirmation, chased, cut_short ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (plVal, dateVal, tradeStartVal, tradeLengthVal, explanationVal, contractVal, dteVal, selectGradeVal, buySell, countertrendVal, confirmationVal, chasedVal, cutShortVal, pic1, pic2, pic3, pic4))
+            # cursor.execute("REPLACE INTO Trades (id, pl, date, trade_start, trade_length, explanation, contracts, dte, rating, buySell, countertrend, confirmation, chased, cut_short, pic1, pic2, pic2, pic4) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (idVal, newTradeValues[0], newTradeValues[1], newTradeValues[2], newTradeValues[3], newTradeValues[4], newTradeValues[5], newTradeValues[6], newTradeValues[7], newTradeValues[8], newTradeValues[9], newTradeValues[10], newTradeValues[11], newTradeValues[12], newTradeValues[13], newTradeValues[14], newTradeValues[15], newTradeValues[16]))
             sqliteConnection.commit()
             result = cursor.fetchall()
             return result
@@ -499,38 +499,41 @@ class Api:
                     dateList = []
                     dateIndex = []
                     addedPlList = []
-                    for x in result:
-                        if (x[1] == 'A'):
-                            ratingList.append(1)
-                        elif (x[1] == 'B'):
-                            ratingList.append(2)
-                        elif (x[1] == 'C'):
-                            ratingList.append(3)
-                        elif (x[1] == 'D'):
-                            ratingList.append(4)
-                        elif (x[1] == 'F'):
-                            ratingList.append(5)
-                        plList.append(x[0])
-                        dateList.append(x[2])
-                    print('DATE LIST : ' , dateList)
-                    print('PL LIST: ', plList)
-                    i = 1
-                    while i < len(dateList):
-                        if (dateList[i] == dateList[i - 1]):
-                            finalVal = plList[i] + plList[i - 1]
-                            plList[i - 1] = ''
-                            plList[i] = finalVal
-                            i += 1
-                        else:
-                            i += 1
-                    p = 0
-                    while p < len(plList):
-                        if (plList[p] != ''):
-                            addedPlList.append(plList[p])
-                            p += 1
-                        else:
-                            p += 1
-                    return [['rating', 'dailyTotal'], [ratingList, addedPlList]]
+                    if (result != ""):
+                        for x in result:
+                            if (x[1] == 'A'):
+                                ratingList.append(1)
+                            elif (x[1] == 'B'):
+                                ratingList.append(2)
+                            elif (x[1] == 'C'):
+                                ratingList.append(3)
+                            elif (x[1] == 'D'):
+                                ratingList.append(4)
+                            elif (x[1] == 'F'):
+                                ratingList.append(5)
+                            plList.append(x[0])
+                            dateList.append(x[2])
+                        print('DATE LIST : ' , dateList)
+                        print('PL LIST: ', plList)
+                        i = 1
+                        while i < len(dateList):
+                            if (dateList[i] == dateList[i - 1]):
+                                finalVal = plList[i] + plList[i - 1]
+                                plList[i - 1] = ''
+                                plList[i] = finalVal
+                                i += 1
+                            else:
+                                i += 1
+                        p = 0
+                        while p < len(plList):
+                            if (plList[p] != ''):
+                                addedPlList.append(plList[p])
+                                p += 1
+                            else:
+                                p += 1
+                        return [['rating', 'dailyTotal'], [ratingList, addedPlList]]
+                    else:
+                        return ""
                 except sqlite3.Error as error:
                     print('Error occurred- ', error)
                 finally:
@@ -545,8 +548,8 @@ class Api:
                     sqlStart = str('SELECT pl, rating, ' + options )
                     if (options == ''):
                         sqlStart = str('SELECT pl, rating')
-                    elif (options == 'callPut'):
-                        sqlStart = str('SELECT pl, rating, callput ')
+                    elif (options == 'buySell'):
+                        sqlStart = str('SELECT pl, rating, buySell ')
                     if (collation == 'singleContract'):
                         sqlStart = sqlStart + ', contracts'
                     if (singleMulti == 'single'):
@@ -573,44 +576,46 @@ class Api:
                     finalNames = ['rating', timeName]
                     finalData = [ratingList, plList]
                     print(result)
-                    for x in result:
-                        plList.append(x[0])
-                        if (options == 'callPut'):
-                            if (x[2] == 'call'):
-                                callList.append(x[0])
-                            elif (x[2] == 'put'):
-                                putList.append(x[0])
+                    if (result != ""):
+                        for x in result:
+                            plList.append(x[0])
+                            if (options == 'buySell'):
+                                if (x[2] == 'long'):
+                                    callList.append(x[0])
+                                elif (x[2] == 'short'):
+                                    putList.append(x[0])
+                            if (collation == 'singleContract'):
+                                contractList.append(x[0] / x[3])
+                            if (x[1] == 'A'):
+                                    ratingList.append(1)
+                            elif (x[1] == 'B'):
+                                    ratingList.append(2)
+                            elif (x[1] == 'C'):
+                                    ratingList.append(3)
+                            elif (x[1] == 'D'):
+                                    ratingList.append(4)
+                            elif (x[1] == 'F'):
+                                    ratingList.append(5)
+                            if (options != ''):
+                                if (x[2] == 'on'):
+                                    yesCustomList.append(x[0])
+                                elif (x[2] == 'off'):
+                                    noCustomList.append(x[0])
                         if (collation == 'singleContract'):
-                             contractList.append(x[0] / x[3])
-                        if (x[1] == 'A'):
-                                ratingList.append(1)
-                        elif (x[1] == 'B'):
-                                ratingList.append(2)
-                        elif (x[1] == 'C'):
-                                ratingList.append(3)
-                        elif (x[1] == 'D'):
-                                ratingList.append(4)
-                        elif (x[1] == 'F'):
-                                ratingList.append(5)
+                            finalData.append(contractList)
+                            finalNames.append(collation)
                         if (options != ''):
-                            if (x[2] == 'on'):
-                                yesCustomList.append(x[0])
-                            elif (x[2] == 'off'):
-                                noCustomList.append(x[0])
-                    if (collation == 'singleContract'):
-                        finalData.append(contractList)
-                        finalNames.append(collation)
-                    if (options != ''):
-                        if (options == 'callPut'):
-                            finalNames.append('call')
-                            finalNames.append('put')
-                            finalData.append(callList)
-                            finalData.append(putList)
-                        else:
-                            finalData.append(yesCustomList)
-                            finalNames.append(options)
-                    return [finalNames, finalData]
-
+                            if (options == 'buySell'):
+                                finalNames.append('long')
+                                finalNames.append('short')
+                                finalData.append(callList)
+                                finalData.append(putList)
+                            else:
+                                finalData.append(yesCustomList)
+                                finalNames.append(options)
+                        return [finalNames, finalData]
+                    else:
+                        return ""
                
                 except sqlite3.Error as error:
                     print('Error occurred- ', error)
@@ -618,66 +623,6 @@ class Api:
                     if sqliteConnection:
                         sqliteConnection.close()
                 
-#     def createNewFile(self, fileName, fileLocation):
-# #         <!-- CREATE TABLE "Trades" (
-# # 	"id"	INTEGER NOT NULL UNIQUE COLLATE BINARY,
-# # 	"pl"	NUMERIC NOT NULL COLLATE BINARY,
-# # 	"date"	TEXT COLLATE BINARY,
-# # 	"trade_start"	TEXT COLLATE BINARY,
-# # 	"trade_length"	INTEGER COLLATE BINARY,
-# # 	"explanation"	TEXT COLLATE BINARY,
-# # 	"contracts"	INTEGER NOT NULL COLLATE BINARY,
-# # 	"dte"	INTEGER COLLATE BINARY,
-# # 	"rating"	TEXT COLLATE BINARY,
-# # 	"callput"	INTEGER COLLATE BINARY,
-# # 	"countertrend"	INTEGER COLLATE BINARY,
-# # 	"confirmation"	INTEGER COLLATE BINARY,
-# # 	"chased"	INTEGER COLLATE BINARY,
-# # 	"cut_short"	INTEGER COLLATE BINARY,
-# # 	"pic1"	BLOB COLLATE BINARY,
-# # 	"pic2"	BLOB COLLATE BINARY,
-# # 	"pic3"	BLOB COLLATE BINARY,
-# # 	"pic4"	BLOB COLLATE BINARY,
-# # 	PRIMARY KEY("id" AUTOINCREMENT)
-# # ); -->
-
-#         newFile = open(str(fileName + '.db'), 'x')#makes the file just fine, in same dir though
-#         newFileLocation = str(os.path.abspath(str(fileName + '.db')))
-#         newFile.close()#apparrently when a new file is made, it is opened so you cannot move it (as I see now with the whole open() thing. it wasn't letting me do it due to shutil saying that it can't do stuff with another process running, that was the process
-#         shutil.move(newFileLocation, fileLocation)
-#         # create and move new file
-#         #load prev data
-#         #add data to table
-#         try:
-#             sqliteConnection = sqlite3.connect('settings.db')
-#             cursor = sqliteConnection.cursor()
-#             cursor.execute('SELECT data_name, SQL_datatype FROM User_DB_Structure')
-#             result = cursor.fetchall()
-#             dataPhrase = ''
-#             sqliteConnection.close()
-#             for x in result:
-#                 dataPhrase = dataPhrase + str('"'+ x[0]+ '" '+ x[1] + ',')
-#             print(dataPhrase)
-#             sqlPhrase = (str('CREATE TABLE "Trades" ( "id" INTEGER NOT NULL UNIQUE, ' + dataPhrase + ' PRIMARY KEY ("id" AUTOINCREMENT));'))
-#             try:
-#                 newConnection = sqlite3.connect(str(fileLocation + '\\' + fileName + '.db'))
-#                 newcursor = newConnection.cursor()
-#                 newcursor.execute(sqlPhrase)
-#                 newcursor.execute('CREATE TABLE "prevDayOfWeeks" ("date" TEXT NOT NULL"Month"	NUMERIC NOT NULL,"dayOfWeek"	NUMERIC NOT NULL,"pl" NUMERIC NOT NULL)')
-#                 newConnection.commit()
-#             except sqlite3.Error as error:
-#                 print('Error occurred- ', error)
-#             finally:
-#                 if newConnection:
-#                     newConnection.close()
-#             self.createPastStats(self, referencefile, oldfile)
-#             #print(str(fileLocation + '\\' + fileName + '.db'))
-#             self.saveFavoriteFile(str(fileLocation + '\\' + fileName + '.db'))
-#         except sqlite3.Error as error:
-#             print('Error occurred- ', error)
-#         finally:
-#             if sqliteConnection:
-#                 sqliteConnection.close()
     def createNewFile(self, fileName, fileLocation, referenceFile):
 #<!-- CREATE TABLE "Trades" (
 # 	"id"	INTEGER NOT NULL UNIQUE COLLATE BINARY,
@@ -689,7 +634,7 @@ class Api:
 # 	"contracts"	INTEGER NOT NULL COLLATE BINARY,
 # 	"dte"	INTEGER COLLATE BINARY,
 # 	"rating"	TEXT COLLATE BINARY,
-# 	"callput"	INTEGER COLLATE BINARY,
+# 	"buySell"	INTEGER COLLATE BINARY,
 # 	"countertrend"	INTEGER COLLATE BINARY,
 # 	"confirmation"	INTEGER COLLATE BINARY,
 # 	"chased"	INTEGER COLLATE BINARY,
@@ -704,7 +649,7 @@ class Api:
         newFile = open(str(fileName + '.db'), 'x')#makes the file just fine, in same dir though
         newFileLocation = str(os.path.abspath(str(fileName + '.db')))
         newFile.close()#apparrently when a new file is made, it is opened so you cannot move it (as I see now with the whole open() thing. it wasn't letting me do it due to shutil saying that it can't do stuff with another process running, that was the process
-        shutil.move(newFileLocation, fileLocation)#this isn't working for some reason
+        shutil.move(newFileLocation, fileLocation)
         # create and move new file
         #load prev data
         #add data to table
@@ -781,20 +726,20 @@ class Api:
         numWins = len(winMulti)
         numLosses = len(lossMulti)
         multiPlVal = sum(multipl)
-        singlePlVal = sum(singlepl)
-        ww = (numWins / numTrades) * 100
-        multiWAmt = sum(winMulti)
-        multiLAmt = sum(lossMulti)
-        singleWAmt = sum(winSingle)
-        singleLAmt = sum(lossSingle)
-        multiWAvg = multiWAmt / numWins
-        multiLAvg = multiLAmt / numLosses
-        singleWAvg = singleWAmt / numWins
-        singleLAvg = singleLAmt / numLosses
-        multiTotalAvg = sum(multipl) / len(multipl)
-        singleTotalAvg = sum(singlepl) / len(singlepl)
-        multiProjection = (multiWAvg * ww) + (multiLAvg * (100 - ww))
-        singleProjection = (singleWAvg * ww) + (singleLAvg * (100 - ww))
+        singlePlVal = round(sum(singlepl),2)
+        ww = round((numWins / numTrades) * 100,2)
+        multiWAmt = round(sum(winMulti),2)
+        multiLAmt = round(sum(lossMulti),2)
+        singleWAmt = round(sum(winSingle),2)
+        singleLAmt = round(sum(lossSingle),2)
+        multiWAvg = round(multiWAmt / numWins,2)
+        multiLAvg = round(multiLAmt / numLosses,2)
+        singleWAvg = round((singleWAmt / numWins), 2)
+        singleLAvg = round(singleLAmt / numLosses,2)
+        multiTotalAvg = round(sum(multipl) / len(multipl),2)
+        singleTotalAvg = round(sum(singlepl) / len(singlepl),2)
+        multiProjection = round((multiWAvg * ww) + (multiLAvg * (100 - ww)),2)
+        singleProjection = round((singleWAvg * ww) + (singleLAvg * (100 - ww)),2)
         multiWLDivided = round((multiLAvg / multiWAvg), 2)
         singleWLDivided = round((singleLAvg / singleWAvg), 2)
         multiWLR = str('1:' + str(multiWLDivided))
@@ -802,6 +747,7 @@ class Api:
         
         monthName = referenceFile.split('\\')
         print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB', monthName)
+        print('singleWAvg : ' , (singleWAmt / numWins))
 
         totalStatsReturn = [[numTrades, numWins, numLosses, ww], 
         [multiPlVal, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR ],
@@ -811,7 +757,7 @@ class Api:
             cursor = sqliteConnection.cursor()
             cursor.execute('INSERT INTO prevData(Month, numTrades, numWins, numLosses, ww, multiPl, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR, singlePl, singleWAmt, singleLAmt, singleWAvg, singleLAvg, singleTotalAvg, singleProjection, singleWLR) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
             monthName[-1][:-3], numTrades, numWins, numLosses, ww, multiPlVal, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR,
-            singlePlVal, singleWAmt, singleLAmt, singleWAmt, singleLAvg, singleTotalAvg, singleProjection, singleWLR])
+            singlePlVal, singleWAmt, singleLAmt, singleWAvg, singleLAvg, singleTotalAvg, singleProjection, singleWLR])
             sqliteConnection.commit()
         except sqlite3.Error as error:
              print('Error occurred- MonthlyStats() ', error)
@@ -858,14 +804,17 @@ class Api:
             for x in result:
                 sqlVals.append(x)
             sqliteConnection.close()
-            if len(sqlVals)!= 0:
+            if len(sqlVals) > 0:
                 try:
                     newDbConnection = sqlite3.connect(newFile)
                     cursor = newDbConnection.cursor()
                     print('AAAAAAAAAAAA', len(sqlVals))
-                    cursor.execute('INSERT INTO prevData(Month, numTrades, numWins, numLosses, ww, multiPl, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR, singlePl, singleWAmt, singleLAmt, singleWAvg, singleLAvg, singleTotalAvg, singleProjection, singleWLR) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-                        sqlVals[0], sqlVals[1], sqlVals[2], sqlVals[3], sqlVals[4], sqlVals[5], sqlVals[6], sqlVals[7], sqlVals[8], sqlVals[9], sqlVals[10], sqlVals[11], sqlVals[12], sqlVals[13], sqlVals[14], sqlVals[15], sqlVals[16], sqlVals[17], sqlVals[18], sqlVals[19], sqlVals[20]
-                    ])
+                    print('SQL VALS: ', sqlVals)
+                    for x in sqlVals:
+                        cursor.execute('INSERT INTO prevData(Month, numTrades, numWins, numLosses, ww, multiPl, multiWAmt, multiLAmt, multiWAvg, multiLAvg, multiTotalAvg, multiProjection, multiWLR, singlePl, singleWAmt, singleLAmt, singleWAvg, singleLAvg, singleTotalAvg, singleProjection, singleWLR) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+                            x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15], x[16], x[17], x[18], x[19], x[20]
+                        ])
+                        newDbConnection.commit()
                 except sqlite3.Error as error:
                     print('Error occurred- Append Old Months ', error)
                 finally:
@@ -890,8 +839,9 @@ class Api:
                 try:
                     newDBConnection = sqlite3.connect(newFile)
                     cursor = newDBConnection.cursor()
-                    cursor.execute('INSERT INTO prevDayOfWeeks (date, Month, dayOfWeek, pl) VALUES (?, ?, ?, ?)', [sqlVals[0], sqlVals[1], sqlVals[2], sqlVals[3]])
-                    newDBConnection.commit()
+                    for x in sqlVals:
+                        cursor.execute('INSERT INTO prevDayOfWeeks (date, Month, dayOfWeek, pl) VALUES (?, ?, ?, ?)', [x[0], x[1], x[2], x[3]])
+                        newDBConnection.commit()
                 except sqlite3.Error as error:
                     print('Error occurred- AppendOldWeeks', error)
                 finally:
@@ -945,7 +895,7 @@ class Api:
                 cursor.execute('INSERT INTO prevDayOfWeeks (date, Month, dayOfWeek, pl) VALUES (?, ?, ?, ?)', [x[0], x[1], x[2], x[3]])
             sqliteConnection.commit()
         except sqlite3.Error as error:
-             print('Error occurred- DayOfWeek', error)
+            print('Error occurred- DayOfWeek', error)
         finally:
             if sqliteConnection:
                 sqliteConnection.close()
