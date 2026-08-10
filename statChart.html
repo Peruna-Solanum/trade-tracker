@@ -105,11 +105,10 @@ label, p{
                     <option id="multiContract" value="multiContract">Multi-Contract:</option>
                     <option id="singleContract" value="singleContract">Single-Contract:</option>
                     <option id="dailyTotal" value="dailyTotal">Daily Totals:</option>
-                    <option id="dayOfWeek" value="dayOfWeek">Day of Week:</option>
                 </select>
                 <select id="custom">
                     <option id="extras" value="">--Extras:--</option>
-                    <option id="callPut" value="callPut">Call/Put:</option>
+                    <option id="buySell" value="buySell">Long/Short:</option>
                 </select>
                 <label>
                     All Stats:
@@ -120,73 +119,14 @@ label, p{
                     <input type="checkbox" id="absolutelyAll" value="absolutelyAll" onclick = "allOff()">
                 </label>
                 <button type="button" id="submitRules">Calculate Stats:</button>
-                <p>Note: if you are missing trade data (ex: missing some dte data) that will throw off stats. 
+                <p>- Note: if you are missing trade data (ex: missing if long or short) that will throw off stats. 
                     Go to the <a href="allTrades.html" ><strong>All Trades</strong></a> page and the trades highlighted in red have something missing.
                 </p>
+                <p>- Go to <a href="pastData">Past Data</a> page if you want to see how each day of the week differs.</p>
             </div>
             </div>
                             <h2>Stats:</h2>
             <div id="statZone">
-                <table id="dayOfWeekTable">
-                        <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                                <th scope="col" id="Monday">Monday:</th>
-                                <th scope = "col" id="Tuesday">Tuesday:</th>
-                                <th scope = "col" id="Wednesday">Wednesday:</th>
-                                <th scope = "col" id="Thursday">Thursday:</th>
-                                <th scope = "col" id="Friday">Friday:</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th id="January">January</th>
-                                <td class="empty"></td>
-                                <td id="M1"></td>
-                                <td id="T1"></td>
-                                <td id="W1"></td>
-                                <td id="Th1"></td>
-                                <td id="F1"></td>
-                            </tr>
-                            <tr>
-                                <th class="empty"></th>
-                                <td class="empty"></td>
-                                <td id="M2"></td>
-                                <td id="T2"></td>
-                                <td id="W2"></td>
-                                <td id="Th2"></td>
-                                <td id="F2"></td>
-                           </tr>
-                           <tr>
-                                <th class="empty"></th>
-                                <td class="empty"></td>
-                                <td id="M3"></td>
-                                <td id="T3"></td>
-                                <td id="W3"></td>
-                                <td id="Th3"></td>
-                                <td id="F3"></td>
-                           </tr>
-                           <tr>
-                                <th class="empty"></th>
-                                <td class="empty"></td>
-                                <td id="M4"></td>
-                                <td id="T4"></td>
-                                <td id="W4"></td>
-                                <td id="Th4"></td>
-                                <td id="F4"></td>
-                           </tr>
-                           <tr>
-                                <th class="empty"></th>
-                                <td class="empty"></td>
-                                <td id="M5"></td>
-                                <td id="T5"></td>
-                                <td id="W5"></td>
-                                <td id="Th5"></td>
-                                <td id="F5"></td>
-                           </tr>
-                        </tbody>
-                </table>
             </div>
             <div id="overallStats">
                 <h4>Other Stats:</h4>
@@ -218,7 +158,7 @@ label, p{
                                 <th scope="row">P/L:</th>
                             </tr>
                             <tr id="WWRow">
-                                <th scope="row">Win Ratio:</th>
+                                <th scope="row">Win %:</th>
                             </tr>
                             <tr id="wAmtRow">
                                 <th scope="row">Win Amt:</th>

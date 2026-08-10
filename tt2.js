@@ -37,25 +37,32 @@ async function loadResults() {
 userData = loadResults();
 async function main() {
     data =await userData
+
         let currentFile = data[0];
         let quickPL = data[1];
         let quickWW = data[2];
-        let editable = data[3];
+        let canEdit = data[3];
+        let editable = [];
+       // let editable = data[3];
         let hideable = data[4];
         let hidden = data[5];
         let quickShow = data[6];
         let color = data[7];
         let fileCustomList  = data[8];
+        
 
 function popExtra() {
-    if (fileCustomList !== editable.length) {
-        editable.pop((editable.length - 1))
-        // for (x = 0; x < editable.length; x ++) {
-        //     if (fileCustomList.contains(editable[x])) {
-
-        //     } else {
-        //         editable.pop(x)
-        // }
+    for (i - 0; i < fileCustomList.length; i++) {
+        fileCustomList[i].replace('"', '');
+    }
+    console.log(fileCustomList)
+        for (x = 0; x < canEdit.length; x ++) {
+            if (fileCustomList.includes(canEdit[x])) {
+                console.log(canEdit[x] + ' is included in both')
+                editable.push(canEdit[x])
+            } else {
+                console.log(canEdit[x] + ' is not included')
+        }
     }}
     popExtra()
 
@@ -87,7 +94,7 @@ async function screenLayout() {
     const contractsBox = document.getElementById('tradeContracts');
     const dteBox = document.getElementById('dte');
     const ratingBox = document.getElementById('rating');
-    const callPutBox = document.getElementById('callPut');
+    const longShortBox = document.getElementById('longShort');
 
     const hideableList = ['trade_start', 'trade_length', 'dte'];
     
@@ -344,7 +351,7 @@ const form = document.getElementById('form');
         const contractVal = document.getElementById('tradeContracts');
         const dteVal = document.getElementById('dte');
         const selectGradeVal = document.getElementById('selectGrade');
-        const callPut = document.getElementById('callPut');
+        const longShort = document.getElementById('longShort');
             const pic1 = document.getElementById('pic1');
             const pic2 = document.getElementById('pic2');
             const pic3 = document.getElementById('pic3');
@@ -357,7 +364,7 @@ const form = document.getElementById('form');
         contractVal.value = "";
         dteVal.value = "";
         selectGradeVal.value = "";
-        callPut.value = "call";
+        longShort.value = "nolongShort";
         document.querySelectorAll('input[type=checkbox]').forEach(element=> element.checked = false);//don't need to define individual boxes anymore
         pic1.innerHTML = "";
         pic2.innerHTML = "";
@@ -389,7 +396,10 @@ const form = document.getElementById('form');
                 checkBoxNames.push(checkboxes[i].id)
             }
         }
-        pywebview.api.saveTrade(currentFile, plVal.value, dateVal.value, tradeStartVal.value, tradeLengthVal.value, explanationVal.value, contractVal.value, dteVal.value, selectGradeVal.value, callPut.value, pic1.innerHTML, pic2.innerHTML, pic3.innerHTML, pic4.innerHTML, checkBoxNames, checkBoxValues).then(loadTrades).then(main);
+        if (contractVal.value === '') {
+            contractVal.value = 1;
+        } else {}
+        pywebview.api.saveTrade(currentFile, plVal.value, dateVal.value, tradeStartVal.value, tradeLengthVal.value, explanationVal.value, contractVal.value, dteVal.value, selectGradeVal.value, longShort.value, pic1.innerHTML, pic2.innerHTML, pic3.innerHTML, pic4.innerHTML, checkBoxNames, checkBoxValues).then(loadTrades).then(main);
     }
     boxChecked();
 clearTrade();
@@ -665,7 +675,7 @@ const tradeZone = document.getElementById('tradeZone');
             const editContracts = document.getElementById('edittradeContracts');
             const editDte = document.getElementById('editdte');
             const editSelectGrade = document.getElementById('editselectGrade');
-            const editCallPut = document.getElementById('editcallPut');
+            const editlongShort = document.getElementById('editlongShort');
                     const editCustomBox= document.getElementById('editCustomBox');
                 const editPic1 = document.getElementById('editpic1');
                 const editPic2 = document.getElementById('editpic2');
@@ -701,7 +711,7 @@ const tradeZone = document.getElementById('tradeZone');
             editContracts.value = result[0][6];
             editDte.value = result[0][7];
             editSelectGrade.value = result[0][8];
-            editCallPut.value = result[0][9];
+            editlongShort.value = result[0][9];
                 editPic1.innerHTML = result[0][10];
                 editPic2.innerHTML = result[0][11];
                 editPic3.innerHTML = result[0][12];
@@ -735,7 +745,7 @@ const tradeZone = document.getElementById('tradeZone');
                         checkBoxValues.push("off")
                     }
                         }
-             let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editCallPut.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
+             let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editlongShort.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
              pywebview.api.saveEditTrade(currentFile, sqlId, editTradeValues, editable, checkBoxValues).then(setTimeout(()=> {
                 window.location.reload();
              }, 100))
@@ -797,3 +807,28 @@ function showEditPic(event) {
         } else {}
     })
 }
+const typeBox = document.getElementById('typeBox');
+function bigExplanation() {
+    tradeExplanation.addEventListener('mouseenter', ()=> {
+        typeBox.style.visibility = "visible";
+        typeBox.textContent = tradeExplanation.value;
+        tradeExplanation.addEventListener('keyup', ()=> {
+            typeBox.textContent = tradeExplanation.value;
+        })
+    })
+    tradeExplanation.addEventListener('keyup', (k)=> {
+        typeBox.style.visibility = "visible";
+        typeBox.textContent = tradeExplanation.value;
+        tradeExplanation.addEventListener('keydown', (k)=> {
+            if (k.key === "Tab") {
+                typeBox.style.visibility = "hidden"
+                typeBox.textContent = ""
+            }
+        })
+    })
+    tradeExplanation.addEventListener('mouseleave', ()=> {
+        typeBox.style.visibility = "hidden"
+        typeBox.textContent = ""
+    })
+}
+bigExplanation();

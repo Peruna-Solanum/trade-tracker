@@ -464,7 +464,8 @@ function isItReady() {
     }
 }
 function newFileDialog(name, folder) {
-    alert(`New file ${name} made at ${folder}. Refresh page to see new file.`)
+    alert(`New file ${name} is being made at ${folder}. Refresh page to see new file.`);
+    window.location.reload();
 }
 const includePastData = document.getElementById('includePastData')
 includePastData.addEventListener('click', ()=> {

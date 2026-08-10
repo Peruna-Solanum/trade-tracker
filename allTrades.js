@@ -308,7 +308,7 @@ const tradeZone = document.getElementById('tradeZone');
         let explanation = document.getElementById('explanation');
         let contracts = document.getElementById('contractNum');
         let rating = document.getElementById('rating');
-            let callPut = document.getElementById('callPut');
+            let buySell = document.getElementById('buySell');
             let pic1 = document.getElementById('pic1');
             let pic2 = document.getElementById('pic2');
             let pic3 = document.getElementById('pic3');
@@ -335,7 +335,7 @@ const tradeZone = document.getElementById('tradeZone');
             explanation.id = "explanation" + index;
             contracts.id = "contractNum" + index;
             rating.id = "rating" + index;
-                callPut.id = "callPut" + index;
+                buySell.id = "buySell" + index;
             pic1.id = "pic1_" + index;
             pic2.id = "pic2_" + index;
             pic3.id = "pic3_" + index;
@@ -371,13 +371,13 @@ const tradeZone = document.getElementById('tradeZone');
         explanation.textContent = data[index][5];
         contracts.textContent = data[index][6];
         rating.textContent = data[index][8];
-            callPut.textContent = data[index][9];
-            if (callPut.textContent === "call") {
-                callPut.style.backgroundColor = "green";
+            buySell.textContent = data[index][9];
+            if (buySell.textContent === "long") {
+                buySell.style.backgroundColor = "green";
             } else {
-                callPut.style.backgroundColor = "red"
+                buySell.style.backgroundColor = "red"
             }
-            callPut.style.padding = "5px"
+            buySell.style.padding = "5px"
         pic1.innerHTML = data[index][10];
         pic2.innerHTML = data[index][11];
         pic3.innerHTML = data[index][12];
@@ -554,7 +554,7 @@ const tradeZone = document.getElementById('tradeZone');
             const editContracts = document.getElementById('edittradeContracts');
             const editDte = document.getElementById('editdte');
             const editSelectGrade = document.getElementById('editselectGrade');
-            const editCallPut = document.getElementById('editcallPut');
+            const editbuySell = document.getElementById('editbuySell');
                     const editCustomBox= document.getElementById('editCustomBox');
                 const editPic1 = document.getElementById('editpic1');
                 const editPic2 = document.getElementById('editpic2');
@@ -590,7 +590,7 @@ const tradeZone = document.getElementById('tradeZone');
             editContracts.value = result[0][6];
             editDte.value = result[0][7];
             editSelectGrade.value = result[0][8];
-            editCallPut.value = result[0][9];
+            editbuySell.value = result[0][9];
                 editPic1.innerHTML = result[0][10];
                 editPic2.innerHTML = result[0][11];
                 editPic3.innerHTML = result[0][12];
@@ -624,7 +624,7 @@ const tradeZone = document.getElementById('tradeZone');
                         checkBoxValues.push("off")
                     }
                         }
-             let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editCallPut.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
+             let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editbuySell.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
              pywebview.api.saveEditTrade(currentFile, sqlId, editTradeValues, editable, checkBoxValues).then(setTimeout(()=> {
                 window.location.reload();
              }, 100))
@@ -643,7 +643,7 @@ const tradeZone = document.getElementById('tradeZone');
         //                 checkBoxValues.push("off")
         //             }
                 
-        //     let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editCallPut.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
+        //     let editTradeValues = [editAmt.value, editDate.value, editStart.value, editLength.value, editExplanation.value, editContracts.value, editDte.value, editSelectGrade.value, editbuySell.value, editPic1.innerHTML, editPic2.innerHTML, editPic3.innerHTML, editPic4.innerHTML]
         //      pywebview.api.saveEditTrade(currentFile, sqlId, editTradeValues, editable, checkBoxValues).then(window.location.reload())}
         //     })//.then(window.location.reload())})  
         

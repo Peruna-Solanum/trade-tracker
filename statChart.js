@@ -22,6 +22,7 @@ async function main() {
         let hidden = data[5];
         let quickShow = data[6];
         let color = data[7];
+        console.log('currentFile:' , currentFile)
 
     changeFileButton.textContent = currentFile;
 
@@ -264,12 +265,18 @@ function absoluteOff() {
 rulesSubmit.addEventListener('click', getStats)
     //const tradeTimeFrame = document.getElementById('tradeTimeFrame');
     collationBox.addEventListener('change', ()=> {
-        console.log('another value was selected');
-        if (collationBox.options[collationBox.selectedIndex].value === "dailyTotal" ||
-            collationBox.options[collationBox.selectedIndex].value === "dayOfWeek"
+        if (collationBox.options[collationBox.selectedIndex].value === "dailyTotal" /*||
+            collationBox.options[collationBox.selectedIndex].value === "dayOfWeek"*/
         ) {
             extraOptions.classList.add('noClick')
-        } else {extraOptions.classList.remove('noClick')}
+            tradeTimeFrame.classList.remove('noClick')
+        } else if (collationBox.options[collationBox.selectedIndex].value === "dayOfWeek") {
+            extraOptions.classList.add('noClick')
+            tradeTimeFrame.classList.add('noClick')
+            tradeTimeFrame.value = "all"
+        } else {extraOptions.classList.remove('noClick')
+            tradeTimeFrame.classList.remove('noClick')
+        }
     })
     tradeTimeFrame.addEventListener('change', ()=> {
         if (tradeTimeFrame.options[tradeTimeFrame.selectedIndex].value === 'byWeek') {
@@ -444,81 +451,87 @@ async function getStats() {
 
     const otherStats = document.getElementById('otherStats')
     const avgRatingBox = document.getElementById('avgRating')
-    console.log(data[1][0])
-    function ratingVal() {
-        let totalRating = ((data[1][0].reduce((a, b)=> a + b, 0))/data[1][0].length).toFixed(2);
-        let ratingLetter;
-        if (totalRating < 1.2) {
-            ratingLetter = 'A+'
-        } else if (totalRating >= 1.2 && totalRating < 1.5) {
-            ratingLetter = 'A-'
-        } else if (totalRating >= 1.5 && totalRating < 1.8) {
-            ratingLetter = 'B+'
-        } else if (totalRating >= 1.8 && totalRating < 2.2) {
-            ratingLetter = 'B'
-        } else if (totalRating >= 2.2 && totalRating < 2.5) {
-            ratingLetter = 'B-'
-        } else if (totalRating >= 2.5 && totalRating < 2.8) {
-            ratingLetter = 'C+'
-        } else if (totalRating >= 2.8 && totalRating < 3.2) {
-            ratingLetter = 'C'
-        } else if (totalRating >= 3.2 && totalRating < 3.5) {
-            ratingLetter = 'C-'
-        } else if (totalRating >= 3.5 && totalRating < 3.8) {
-            ratingLetter = 'D+'
-        } else if (totalRating >= 3.8 && totalRating < 4.2) {
-            ratingLetter = 'D'
-        } else if (totalRating >= 4.2 && totalRating < 4.5) {
-            ratingLetter = 'D-'
-        } else if (totalRating >= 4.5) {
-            ratingLetter = 'F'
-        } else {}
-        avgRatingBox.textContent = ("Average Rating: " + ratingLetter);
-    }
-    ratingVal();
-   for (i = 1; i < data.length; i++) {
-    let currentArray = data[i];
 
-    let title = data[0];
-        function columnStats(arrayList, listTitle) {
-            let winList = [];
-            let lossList = [];
-            for (i = 0; i < arrayList.length; i++) {
-                if (arrayList[i] < 0) {
-                    lossList.push(arrayList[i])
-                } else {winList.push(arrayList[i])}
+    if (data[1][0].length === 0) {
+        alert('There is no data for this section, no new chart will be shown as such.')
+    }
+    else {
+        function ratingVal() {
+            let totalRating = ((data[1][0].reduce((a, b)=> a + b, 0))/data[1][0].length).toFixed(2);
+            let ratingLetter;
+            if (totalRating < 1.2) {
+                ratingLetter = 'A+'
+            } else if (totalRating >= 1.2 && totalRating < 1.5) {
+                ratingLetter = 'A-'
+            } else if (totalRating >= 1.5 && totalRating < 1.8) {
+                ratingLetter = 'B+'
+            } else if (totalRating >= 1.8 && totalRating < 2.2) {
+                ratingLetter = 'B'
+            } else if (totalRating >= 2.2 && totalRating < 2.5) {
+                ratingLetter = 'B-'
+            } else if (totalRating >= 2.5 && totalRating < 2.8) {
+                ratingLetter = 'C+'
+            } else if (totalRating >= 2.8 && totalRating < 3.2) {
+                ratingLetter = 'C'
+            } else if (totalRating >= 3.2 && totalRating < 3.5) {
+                ratingLetter = 'C-'
+            } else if (totalRating >= 3.5 && totalRating < 3.8) {
+                ratingLetter = 'D+'
+            } else if (totalRating >= 3.8 && totalRating < 4.2) {
+                ratingLetter = 'D'
+            } else if (totalRating >= 4.2 && totalRating < 4.5) {
+                ratingLetter = 'D-'
+            } else if (totalRating >= 4.5) {
+                ratingLetter = 'F'
+            } else {}
+            avgRatingBox.textContent = ("Average Rating: " + ratingLetter);
         }
-            let totalPl =  arrayList.reduce((a, b)=> a + b, 0);
-            let numTrades = arrayList.length;
-            let numWins = winList.length;
-            let numLosses = lossList.length;
-            let ww = ((winList.length / arrayList.length) * 100).toFixed(2)
-            let wAmt = winList.reduce((a, b)=> a + b, 0);
-            let lAmt = lossList.reduce((a, b)=> a + b, 0);
-            let avgW = (wAmt / numWins);
-            let avgL = (lAmt / numLosses);
-            let totalAvg = (totalPl / arrayList.length).toFixed(2)
-            function projection() {
-                let lossPercent = 100 - ww
-                let win = avgW * ww;
-                let loss = avgL * lossPercent;
-                return (win + loss).toFixed(2)
-            }
-            function wlRatio() {
-                let ratio = (Math.abs(avgL) / avgW).toFixed(2);
-                return `1 : ${ratio}`
-            }
-            newColumn(listTitle, numTrades, totalPl, numWins, numLosses, ww, wAmt, lAmt, avgW.toFixed(), avgL.toFixed(), totalAvg,projection(),wlRatio(),  i)
+        ratingVal();
+        for (i = 1; i < data.length; i++) {
+            let currentArray = data[i];
+
+            let title = data[0];
+                function columnStats(arrayList, listTitle) {
+                    let winList = [];
+                    let lossList = [];
+                    for (i = 0; i < arrayList.length; i++) {
+                        if (arrayList[i] < 0) {
+                            lossList.push(arrayList[i])
+                        } else {winList.push(arrayList[i])}
+                }
+                    let totalPl =  arrayList.reduce((a, b)=> a + b, 0);
+                    let numTrades = arrayList.length;
+                    let numWins = winList.length;
+                    let numLosses = lossList.length;
+                    let ww = ((winList.length / arrayList.length) * 100).toFixed(2)
+                    let wAmt = winList.reduce((a, b)=> a + b, 0);
+                    let lAmt = lossList.reduce((a, b)=> a + b, 0);
+                    let avgW = (wAmt / numWins);
+                    let avgL = (lAmt / numLosses);
+                    let totalAvg = (totalPl / arrayList.length).toFixed(2)
+                    function projection() {
+                        let lossPercent = 100 - ww
+                        let win = avgW * ww;
+                        let loss = avgL * lossPercent;
+                        return (win + loss).toFixed(2)
+                    }
+                    function wlRatio() {
+                        let ratio = (Math.abs(avgL) / avgW).toFixed(2);
+                        return `1 : ${ratio}`
+                    }
+                    newColumn(listTitle, numTrades, totalPl, numWins, numLosses, ww, wAmt, lAmt, avgW.toFixed(), avgL.toFixed(), totalAvg,projection(),wlRatio(),  i)
+                }
+            //needs to be x not i or else it'll use the wrong number since this is in the for loop
+                for (x = 1; x < currentArray.length; x++) {
+                    columnStats(currentArray[x], title[x]);
+                }
         }
-        //needs to be x not i or else it'll use the wrong number since this is in the for loop
-            for (x = 1; x < currentArray.length; x++) {
-                columnStats(currentArray[x], title[x]);
-            }
+    }
         
         
- }
 
 }
+ 
 function newColumn(listTitle, numTrades, totalPl, numWins, numLosses, ww, wAmt, lAmt, avgW, avgL,
     totalAvg,projection, wlRatio, num) {
             const titleRow = document.getElementById('titleRow');
